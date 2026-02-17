@@ -1,0 +1,475 @@
+[
+{
+  "model": "vaccines.species",
+  "pk": 1,
+  "fields": {
+    "code": "dog",
+    "name": "Dog"
+  }
+},
+{
+  "model": "vaccines.species",
+  "pk": 2,
+  "fields": {
+    "code": "cat",
+    "name": "Cat"
+  }
+},
+{
+  "model": "vaccines.vaccine",
+  "pk": 1,
+  "fields": {
+    "name": "Nobivac DHPPi (Distemper/Parvo/HCC/Parainfluenza)",
+    "category": "core",
+    "description": "Core dog combo vaccine (DHPPi).",
+    "applicable_species": [
+      1
+    ]
+  }
+},
+{
+  "model": "vaccines.vaccine",
+  "pk": 2,
+  "fields": {
+    "name": "Nobivac L4 (Leptospirosis)",
+    "category": "core",
+    "description": "Leptospirosis vaccine; boosters yearly.",
+    "applicable_species": [
+      1
+    ]
+  }
+},
+{
+  "model": "vaccines.vaccine",
+  "pk": 3,
+  "fields": {
+    "name": "Nobivac Rabies",
+    "category": "optional",
+    "description": "Rabies vaccine (risk-based: outdoor/travel).",
+    "applicable_species": [
+      1,
+      2
+    ]
+  }
+},
+{
+  "model": "vaccines.vaccine",
+  "pk": 4,
+  "fields": {
+    "name": "Nobivac BbPi / KC (Kennel cough)",
+    "category": "optional",
+    "description": "Kennel cough vaccine (exposure risk).",
+    "applicable_species": [
+      1
+    ]
+  }
+},
+{
+  "model": "vaccines.vaccine",
+  "pk": 5,
+  "fields": {
+    "name": "Nobivac Lyme (Borrelia)",
+    "category": "optional",
+    "description": "Lyme vaccine (tick risk; availability varies by region).",
+    "applicable_species": [
+      1
+    ]
+  }
+},
+{
+  "model": "vaccines.vaccine",
+  "pk": 6,
+  "fields": {
+    "name": "Nobivac RCP component (Cat flu: FHV/FCV)",
+    "category": "core",
+    "description": "Cat flu components; booster interval 1–3 years (defaulted to 12 months in rules).",
+    "applicable_species": [
+      2
+    ]
+  }
+},
+{
+  "model": "vaccines.vaccine",
+  "pk": 7,
+  "fields": {
+    "name": "Nobivac RCP component (Panleukopenia: FPLV)",
+    "category": "core",
+    "description": "Panleukopenia component; boosters every 3 years.",
+    "applicable_species": [
+      2
+    ]
+  }
+},
+{
+  "model": "vaccines.vaccine",
+  "pk": 8,
+  "fields": {
+    "name": "Nobivac FeLV (LeuFel)",
+    "category": "optional",
+    "description": "FeLV vaccine for cats at risk (outdoor).",
+    "applicable_species": [
+      2
+    ]
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 1,
+  "fields": {
+    "vaccine": 1,
+    "species": 1,
+    "dose_number": 1,
+    "due_age_weeks": 8,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary core dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 2,
+  "fields": {
+    "vaccine": 1,
+    "species": 1,
+    "dose_number": 2,
+    "due_age_weeks": 12,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary core dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 3,
+  "fields": {
+    "vaccine": 1,
+    "species": 1,
+    "dose_number": 3,
+    "due_age_weeks": 16,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary core dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 4,
+  "fields": {
+    "vaccine": 1,
+    "species": 1,
+    "dose_number": 4,
+    "due_age_weeks": null,
+    "due_age_months": 15,
+    "repeat_every_months": 36,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Booster at 15 months; then every 3 years."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 5,
+  "fields": {
+    "vaccine": 2,
+    "species": 1,
+    "dose_number": 1,
+    "due_age_weeks": 8,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary lepto dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 6,
+  "fields": {
+    "vaccine": 2,
+    "species": 1,
+    "dose_number": 2,
+    "due_age_weeks": 12,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary lepto dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 7,
+  "fields": {
+    "vaccine": 2,
+    "species": 1,
+    "dose_number": 3,
+    "due_age_weeks": null,
+    "due_age_months": 15,
+    "repeat_every_months": 12,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Booster at 15 months; then yearly."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 8,
+  "fields": {
+    "vaccine": 3,
+    "species": 1,
+    "dose_number": 1,
+    "due_age_weeks": 12,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": true,
+    "notes": "Optional/risk-based (travel)."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 9,
+  "fields": {
+    "vaccine": 3,
+    "species": 1,
+    "dose_number": 2,
+    "due_age_weeks": null,
+    "due_age_months": 15,
+    "repeat_every_months": 36,
+    "requires_outdoor": false,
+    "requires_travel": true,
+    "notes": "Booster at 15 months; then every 3 years."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 10,
+  "fields": {
+    "vaccine": 4,
+    "species": 1,
+    "dose_number": 1,
+    "due_age_weeks": 12,
+    "due_age_months": null,
+    "repeat_every_months": 12,
+    "requires_outdoor": true,
+    "requires_travel": false,
+    "notes": "Optional (exposure risk). Yearly."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 11,
+  "fields": {
+    "vaccine": 5,
+    "species": 1,
+    "dose_number": 1,
+    "due_age_weeks": 12,
+    "due_age_months": null,
+    "repeat_every_months": 12,
+    "requires_outdoor": true,
+    "requires_travel": false,
+    "notes": "Optional (tick risk). Yearly."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 12,
+  "fields": {
+    "vaccine": 6,
+    "species": 2,
+    "dose_number": 1,
+    "due_age_weeks": 8,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary core dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 13,
+  "fields": {
+    "vaccine": 6,
+    "species": 2,
+    "dose_number": 2,
+    "due_age_weeks": 12,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary core dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 14,
+  "fields": {
+    "vaccine": 6,
+    "species": 2,
+    "dose_number": 3,
+    "due_age_weeks": 16,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary core dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 15,
+  "fields": {
+    "vaccine": 6,
+    "species": 2,
+    "dose_number": 4,
+    "due_age_weeks": null,
+    "due_age_months": 15,
+    "repeat_every_months": 12,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Booster at 15 months; then every 1–3 years (default 1 year)."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 16,
+  "fields": {
+    "vaccine": 7,
+    "species": 2,
+    "dose_number": 1,
+    "due_age_weeks": 8,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary core dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 17,
+  "fields": {
+    "vaccine": 7,
+    "species": 2,
+    "dose_number": 2,
+    "due_age_weeks": 12,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary core dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 18,
+  "fields": {
+    "vaccine": 7,
+    "species": 2,
+    "dose_number": 3,
+    "due_age_weeks": 16,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Primary core dose."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 19,
+  "fields": {
+    "vaccine": 7,
+    "species": 2,
+    "dose_number": 4,
+    "due_age_weeks": null,
+    "due_age_months": 15,
+    "repeat_every_months": 36,
+    "requires_outdoor": false,
+    "requires_travel": false,
+    "notes": "Booster at 15 months; then every 3 years."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 20,
+  "fields": {
+    "vaccine": 3,
+    "species": 2,
+    "dose_number": 1,
+    "due_age_weeks": 12,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": true,
+    "requires_travel": false,
+    "notes": "Optional: outdoor/travel. Exclude indoor cats."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 21,
+  "fields": {
+    "vaccine": 3,
+    "species": 2,
+    "dose_number": 2,
+    "due_age_weeks": null,
+    "due_age_months": 15,
+    "repeat_every_months": 36,
+    "requires_outdoor": true,
+    "requires_travel": false,
+    "notes": "Booster at 15 months; then every 3 years."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 22,
+  "fields": {
+    "vaccine": 8,
+    "species": 2,
+    "dose_number": 1,
+    "due_age_weeks": 12,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": true,
+    "requires_travel": false,
+    "notes": "Optional: outdoor cats. Primary dose 1."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 23,
+  "fields": {
+    "vaccine": 8,
+    "species": 2,
+    "dose_number": 2,
+    "due_age_weeks": 16,
+    "due_age_months": null,
+    "repeat_every_months": null,
+    "requires_outdoor": true,
+    "requires_travel": false,
+    "notes": "Optional: outdoor cats. Primary dose 2."
+  }
+},
+{
+  "model": "vaccines.recommendationrule",
+  "pk": 24,
+  "fields": {
+    "vaccine": 8,
+    "species": 2,
+    "dose_number": 3,
+    "due_age_weeks": null,
+    "due_age_months": 15,
+    "repeat_every_months": 36,
+    "requires_outdoor": true,
+    "requires_travel": false,
+    "notes": "Booster at 15 months; then every 3 years."
+  }
+}
+]

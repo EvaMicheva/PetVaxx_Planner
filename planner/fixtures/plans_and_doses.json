@@ -1,0 +1,76 @@
+[
+  {
+    "model": "planner.plan",
+    "pk": 1,
+    "fields": {
+      "pet": 1,
+      "plan_start_date": "2026-01-15",
+      "status": "draft",
+      "created_at": "2026-01-15T09:00:00Z"
+    }
+  },
+  {
+    "model": "planner.plan",
+    "pk": 2,
+    "fields": {
+      "pet": 3,
+      "plan_start_date": "2024-07-01",
+      "status": "final",
+      "created_at": "2024-07-01T08:30:00Z"
+    }
+  },
+  {
+    "model": "planner.plan",
+    "pk": 3,
+    "fields": {
+      "pet": 5,
+      "plan_start_date": "2026-01-05",
+      "status": "draft",
+      "created_at": "2026-01-05T10:00:00Z"
+    }
+  },
+  {
+    "model": "planner.plan",
+    "pk": 4,
+    "fields": {
+      "pet": 6,
+      "plan_start_date": "2025-10-15",
+      "status": "final",
+      "created_at": "2025-10-15T11:15:00Z"
+    }
+  },
+  {
+    "model": "planner.plan",
+    "pk": 5,
+    "fields": {
+      "pet": 7,
+      "plan_start_date": "2025-03-01",
+      "status": "final",
+      "created_at": "2025-03-01T09:45:00Z"
+    }
+  },
+
+  { "model": "planner.dose", "pk": 1, "fields": { "plan": 1, "vaccine": 1, "dose_number": 1, "due_date": "2026-02-10", "is_booster": false, "notes": "Puppy primary DHPPi dose 1" } },
+  { "model": "planner.dose", "pk": 2, "fields": { "plan": 1, "vaccine": 2, "dose_number": 1, "due_date": "2026-02-10", "is_booster": false, "notes": "Puppy primary Lepto dose 1" } },
+  { "model": "planner.dose", "pk": 3, "fields": { "plan": 1, "vaccine": 1, "dose_number": 2, "due_date": "2026-03-10", "is_booster": false, "notes": "Puppy primary DHPPi dose 2" } },
+  { "model": "planner.dose", "pk": 4, "fields": { "plan": 1, "vaccine": 2, "dose_number": 2, "due_date": "2026-03-10", "is_booster": false, "notes": "Puppy primary Lepto dose 2" } },
+
+  { "model": "planner.dose", "pk": 5, "fields": { "plan": 2, "vaccine": 1, "dose_number": 4, "due_date": "2024-07-01", "is_booster": true, "notes": "Adult DHPPi booster (q36mo typical)" } },
+  { "model": "planner.dose", "pk": 6, "fields": { "plan": 2, "vaccine": 2, "dose_number": 3, "due_date": "2024-07-01", "is_booster": true, "notes": "Adult Lepto booster (annual)" } },
+
+  { "model": "planner.dose", "pk": 7, "fields": { "plan": 3, "vaccine": 6, "dose_number": 1, "due_date": "2026-02-01", "is_booster": false, "notes": "Kitten core FHV/FCV dose 1" } },
+  { "model": "planner.dose", "pk": 8, "fields": { "plan": 3, "vaccine": 7, "dose_number": 1, "due_date": "2026-02-01", "is_booster": false, "notes": "Kitten core FPLV dose 1" } },
+  { "model": "planner.dose", "pk": 9, "fields": { "plan": 3, "vaccine": 6, "dose_number": 2, "due_date": "2026-03-01", "is_booster": false, "notes": "Kitten core FHV/FCV dose 2" } },
+  { "model": "planner.dose", "pk": 10, "fields": { "plan": 3, "vaccine": 7, "dose_number": 2, "due_date": "2026-03-01", "is_booster": false, "notes": "Kitten core FPLV dose 2" } },
+
+  { "model": "planner.dose", "pk": 11, "fields": { "plan": 4, "vaccine": 6, "dose_number": 1, "due_date": "2025-11-01", "is_booster": false, "notes": "Outdoor cat core FHV/FCV dose 1" } },
+  { "model": "planner.dose", "pk": 12, "fields": { "plan": 4, "vaccine": 7, "dose_number": 1, "due_date": "2025-11-01", "is_booster": false, "notes": "Outdoor cat core FPLV dose 1" } },
+  { "model": "planner.dose", "pk": 13, "fields": { "plan": 4, "vaccine": 8, "dose_number": 1, "due_date": "2025-11-15", "is_booster": false, "notes": "Outdoor cat FeLV dose 1" } },
+  { "model": "planner.dose", "pk": 14, "fields": { "plan": 4, "vaccine": 6, "dose_number": 2, "due_date": "2025-12-01", "is_booster": false, "notes": "Outdoor cat core FHV/FCV dose 2" } },
+  { "model": "planner.dose", "pk": 15, "fields": { "plan": 4, "vaccine": 7, "dose_number": 2, "due_date": "2025-12-01", "is_booster": false, "notes": "Outdoor cat core FPLV dose 2" } },
+  { "model": "planner.dose", "pk": 16, "fields": { "plan": 4, "vaccine": 8, "dose_number": 2, "due_date": "2025-12-15", "is_booster": false, "notes": "Outdoor cat FeLV dose 2" } },
+
+  { "model": "planner.dose", "pk": 17, "fields": { "plan": 5, "vaccine": 6, "dose_number": 4, "due_date": "2025-03-01", "is_booster": true, "notes": "Adult cat FHV/FCV booster" } },
+  { "model": "planner.dose", "pk": 18, "fields": { "plan": 5, "vaccine": 7, "dose_number": 4, "due_date": "2025-03-01", "is_booster": true, "notes": "Adult cat FPLV booster" } },
+  { "model": "planner.dose", "pk": 19, "fields": { "plan": 5, "vaccine": 3, "dose_number": 1, "due_date": "2025-03-01", "is_booster": false, "notes": "Rabies primary for traveling cat" } }
+]

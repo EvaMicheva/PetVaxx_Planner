@@ -1,0 +1,98 @@
+[
+{
+    "model": "pets.pet",
+    "pk": 1,
+    "fields": {
+        "name": "Bello",
+        "species": "dog",
+        "birth_date": "2025-12-10",
+        "lifestyle": "mixed",
+        "travels_abroad": false,
+        "notes": "Puppy, first vaccinations not documented."
+    }
+},
+{
+    "model": "pets.pet",
+    "pk": 2,
+    "fields": {
+        "name": "Luna",
+        "species": "dog",
+        "birth_date": "2025-10-01",
+        "lifestyle": "outdoor",
+        "travels_abroad": true,
+        "notes": "Travels with owner to Austria; needs rabies plan."
+    }
+},
+{
+    "model": "pets.pet",
+    "pk": 3,
+    "fields": {
+        "name": "Max",
+        "species": "dog",
+        "birth_date": "2023-06-15",
+        "lifestyle": "outdoor",
+        "travels_abroad": false,
+        "notes": "Hikes often, higher tick risk (Lyme)."
+    }
+},
+{
+    "model": "pets.pet",
+    "pk": 4,
+    "fields": {
+        "name": "Nala",
+        "species": "dog",
+        "birth_date": "2021-03-22",
+        "lifestyle": "mixed",
+        "travels_abroad": false,
+        "notes": "Adult dog; boosters should appear."
+    }
+},
+{
+    "model": "pets.pet",
+    "pk": 5,
+    "fields": {
+        "name": "Minka",
+        "species": "cat",
+        "birth_date": "2025-11-20",
+        "lifestyle": "indoor",
+        "travels_abroad": false,
+        "notes": "Indoor-only kitten; rabies/FeLV should NOT be included."
+    }
+},
+{
+    "model": "pets.pet",
+    "pk": 6,
+    "fields": {
+        "name": "Simba",
+        "species": "cat",
+        "birth_date": "2025-09-05",
+        "lifestyle": "outdoor",
+        "travels_abroad": false,
+        "notes": "Outdoor cat; should include FeLV and possibly rabies if rules require outdoor."
+    }
+},
+{
+    "model": "pets.pet",
+    "pk": 7,
+    "fields": {
+        "name": "Kira",
+        "species": "cat",
+        "birth_date": "2022-01-30",
+        "lifestyle": "mixed",
+        "travels_abroad": true,
+        "notes": "Occasional travel; rabies should be considered."
+    }
+},
+{
+    "model": "pets.pet",
+    "pk": 8,
+    "fields": {
+        "name": "Oskar",
+        "species": "cat",
+        "birth_date": "2019-07-12",
+        "lifestyle": "indoor",
+        "travels_abroad": false,
+        "notes": "Adult indoor cat; core boosters only."
+    }
+}
+]
