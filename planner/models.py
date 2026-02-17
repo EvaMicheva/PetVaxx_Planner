@@ -28,7 +28,7 @@ class Dose(models.Model):
     vaccine = models.ForeignKey("vaccines.Vaccine", on_delete=models.CASCADE, related_name="doses")
 
     dose_number = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(10)]
+        validators=[MinValueValidator(1), MaxValueValidator(100)]
     )
     due_date = models.DateField()
 

@@ -5,4 +5,6 @@ from pets.models import Pet
 
 @admin.register(Pet)
 class PetAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["name", "species", "birth_date"]
+    list_filter = ["species"]
+    search_fields = ["name", "species"]

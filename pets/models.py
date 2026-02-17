@@ -31,4 +31,4 @@ class Pet(models.Model):
         return self.age_in_days() // 7
 
     def __str__(self) -> str:
-        return f"{self.name}"
+        return f"{self.name} - {self.species}"
