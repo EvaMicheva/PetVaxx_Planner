@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'planner:home' %}">
+            <i class="fas fa-shield-dog me-2 fs-4"></i>
+            <span>VetVax Planner</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'planner:home' %}">
+                        <i class="fas fa-home me-1"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'pets' in request.path %}active{% endif %}" href="{% url 'pets:list' %}">
+                        <i class="fas fa-paw me-1"></i> Pets
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'vaccines' in request.path %}active{% endif %}" href="{% url 'vaccines:list' %}">
+                        <i class="fas fa-syringe me-1"></i> Vaccines
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'plans' in request.path and 'quick-add' not in request.path %}active{% endif %}" href="{% url 'planner:list' %}">
+                        <i class="fas fa-calendar-check me-1"></i> Plans
+                    </a>
+                </li>
+                <li class="nav-item ms-lg-3">
+                    <a class="btn btn-light text-primary fw-bold px-3 rounded-pill" href="{% url 'planner:quick_add' %}">
+                        <i class="fas fa-magic me-1"></i> Quick Plan
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
