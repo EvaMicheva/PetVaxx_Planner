@@ -77,19 +77,6 @@ python manage.py runserver
 The application will be accessible at `http://127.0.0.1:8000/`.
 Access the admin interface at `http://127.0.0.1:8000/admin/` (requires creating a superuser via `python manage.py createsuperuser`).
 
-## Testing
-
-Run the test suite to ensure everything is working correctly:
-
-```bash
-python manage.py test
-```
-
-Specific app tests:
-- `python manage.py test pets`
-- `python manage.py test vaccines`
-- `python manage.py test planner`
-
 ## Project Structure
 
 - `pets/`: Pet profiles and lifestyle tracking.
