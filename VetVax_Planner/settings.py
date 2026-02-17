@@ -33,7 +33,11 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = []
 
 
-# Application definition
+PROJECT_APPS = [
+    'pets',
+    'vaccines',
+    'planner',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -42,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    *PROJECT_APPS
 ]
 
 MIDDLEWARE = [
