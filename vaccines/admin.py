@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from vaccines.models import Vaccine
+
+
+@admin.register(Vaccine)
+class VaccineAdmin(admin.ModelAdmin):
+    pass
