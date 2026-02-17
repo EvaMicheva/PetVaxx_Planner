@@ -1,54 +1,72 @@
 # VetVax Planner
 
-VetVax Planner is a Django-based web application designed for managing veterinary vaccination schedules.
+VetVax Planner is a Django-based web application designed for managing veterinary vaccination schedules for pets. It helps pet owners and veterinarians track vaccination history and plan future doses based on species-specific recommendation rules.
 
-## Features (in development)
-- Vaccination appointment management.
-- Animal medical history tracking.
-- Notifications for upcoming vaccinations.
+## Features
+
+- **Pet Management**: Track pets, their species, birth dates, and lifestyle (indoor, outdoor, travel).
+- **Vaccine Database**: Store information about different vaccines, categories (core vs. optional), and applicable species.
+- **Recommendation Rules**: Define vaccination schedules based on age (weeks/months) and lifestyle requirements.
+- **Vaccination Plans**: Create personalized vaccination plans for each pet.
+- **Dose Tracking**: Schedule and track individual doses, including boosters.
+- **Automated Data Loading**: Quick setup with comprehensive sample fixtures.
+- **Enhanced Admin Interface**: Manage all data easily through a customized Django admin.
 
 ## Prerequisites
-- Python 3.x
+
+- Python 3.10+
 - PostgreSQL
+- `make` (optional, for automation)
 
 ## Installation
 
-1. Clone the repository:
+1. **Clone the repository**:
    ```bash
    git clone <repository-url>
    cd VetVax_Planner
    ```
 
-2. Create and activate a virtual environment:
+2. **Create and activate a virtual environment**:
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
    ```
 
-3. Install dependencies:
+3. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
 ## Configuration
 
-1. Copy the example environment variables file:
+1. **Copy the example environment variables file**:
    ```bash
    cp .env.example .env
    ```
 
-2. Configure variables in `.env`:
+2. **Configure variables in `.env`**:
    - `SECRET_KEY`: Django secret key.
    - `DEBUG`: Set to `True` for development, `False` for production.
-   - PostgreSQL database details (`DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`).
+   - **PostgreSQL database details**: Update `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, and `DB_PORT` to match your local setup.
 
-## Database
+## Database & Data Loading
 
-Ensure PostgreSQL is running and the database specified in `.env` is created. Then run the migrations:
+1. **Run migrations**:
+   ```bash
+   python manage.py migrate
+   ```
 
-```bash
-python manage.py migrate
-```
+2. **Load sample data (using Makefile)**:
+   The project includes a `Makefile` to quickly populate the database with species, vaccines, recommendation rules, pets, and sample vaccination plans.
+   
+   ```bash
+   make load-all
+   ```
+   
+   Alternatively, you can load fixtures individually:
+   - `make load-vaccines`: Loads vaccines and species-specific rules.
+   - `make load-pets`: Loads example pets.
+   - `make load-planner`: Loads sample vaccination plans and doses.
 
 ## Running the Application
 
@@ -57,3 +75,24 @@ python manage.py runserver
 ```
 
 The application will be accessible at `http://127.0.0.1:8000/`.
+Access the admin interface at `http://127.0.0.1:8000/admin/` (requires creating a superuser via `python manage.py createsuperuser`).
+
+## Testing
+
+Run the test suite to ensure everything is working correctly:
+
+```bash
+python manage.py test
+```
+
+Specific app tests:
+- `python manage.py test pets`
+- `python manage.py test vaccines`
+- `python manage.py test planner`
+
+## Project Structure
+
+- `pets/`: Pet profiles and lifestyle tracking.
+- `vaccines/`: Vaccine definitions and recommendation logic.
+- `planner/`: Management of vaccination plans and individual doses.
+- `VetVax_Planner/`: Core Django project settings and configuration.
