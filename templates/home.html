@@ -3,7 +3,7 @@
 {% block title %}Home - VetVax Planner{% endblock %}
 
 {% block content %}
-<div class="p-5 mb-4 bg-white rounded-4 shadow-sm border-0 overflow-hidden position-relative">
+<div class="p-5 mb-4 bg-white rounded-4 shadow-sm border-0 overflow-hidden position-relative header-section">
     <div class="row align-items-center">
         <div class="col-lg-7 py-4">
             <h1 class="display-4 fw-bold text-primary mb-3">Keep Your Pets Protected</h1>
@@ -12,13 +12,13 @@
                 <a href="{% url 'planner:quick_add' %}" class="btn btn-primary btn-lg px-4 py-2 rounded-pill shadow">
                     <i class="fas fa-magic me-2"></i>Quick Plan Generator
                 </a>
-                <a href="{% url 'pets:add' %}" class="btn btn-outline-primary btn-lg px-4 py-2 rounded-pill">
+                <a href="{% url 'pets:add' %}" class="btn btn-outline-info btn-lg px-4 py-2 rounded-pill">
                     <i class="fas fa-plus me-2"></i>Add New Pet
                 </a>
             </div>
         </div>
         <div class="col-lg-5 text-center d-none d-lg-block">
-            <i class="fas fa-house-medical text-primary opacity-10" style="font-size: 200px;"></i>
+            <i class="fas fa-shield-cat text-info opacity-10" style="font-size: 200px;"></i>
         </div>
     </div>
 </div>
@@ -32,7 +32,7 @@
                 </div>
                 <h2 class="h1 fw-bold text-dark">{{ pets_count }}</h2>
                 <p class="text-muted text-uppercase small ls-wide fw-bold">Registered Pets</p>
-                <a href="{% url 'pets:list' %}" class="btn btn-sm btn-link text-decoration-none fw-bold mt-2">
+                <a href="{% url 'pets:list' %}" class="btn btn-sm btn-link text-decoration-none fw-bold mt-2 text-primary">
                     Manage Pets <i class="fas fa-arrow-right ms-1"></i>
                 </a>
             </div>
@@ -41,12 +41,12 @@
     <div class="col-md-4">
         <div class="card h-100 shadow-sm border-0 text-center p-3">
             <div class="card-body">
-                <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
-                    <i class="fas fa-syringe text-success fs-3"></i>
+                <div class="rounded-circle bg-warning bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                    <i class="fas fa-syringe text-warning fs-3"></i>
                 </div>
                 <h2 class="h1 fw-bold text-dark">{{ vaccines_count }}</h2>
                 <p class="text-muted text-uppercase small ls-wide fw-bold">Vaccine Database</p>
-                <a href="{% url 'vaccines:list' %}" class="btn btn-sm btn-link text-decoration-none fw-bold mt-2 text-success">
+                <a href="{% url 'vaccines:list' %}" class="btn btn-sm btn-link text-decoration-none fw-bold mt-2 text-warning">
                     Browse Vaccines <i class="fas fa-arrow-right ms-1"></i>
                 </a>
             </div>
@@ -55,12 +55,12 @@
     <div class="col-md-4">
         <div class="card h-100 shadow-sm border-0 text-center p-3">
             <div class="card-body">
-                <div class="rounded-circle bg-primary bg-opacity-20 d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
-                    <i class="fas fa-calendar-check text-primary fs-3"></i>
+                <div class="rounded-circle bg-info bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                    <i class="fas fa-calendar-check text-info fs-3"></i>
                 </div>
                 <h2 class="h1 fw-bold text-dark">{{ plans_count }}</h2>
                 <p class="text-muted text-uppercase small ls-wide fw-bold">Active Plans</p>
-                <a href="{% url 'planner:list' %}" class="btn btn-sm btn-link text-decoration-none fw-bold mt-2 text-primary">
+                <a href="{% url 'planner:list' %}" class="btn btn-sm btn-link text-decoration-none fw-bold mt-2 text-info">
                     View Schedules <i class="fas fa-arrow-right ms-1"></i>
                 </a>
             </div>

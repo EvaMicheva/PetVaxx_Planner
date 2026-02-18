@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load planner_extras %}
 
 {% block title %}Plan for {{ plan.pet.name }} - VetVax Planner{% endblock %}
 
@@ -7,11 +8,13 @@
     <div class="col-lg-4">
         <div class="card shadow-sm border-0 mb-4">
             <div class="card-body">
-                <h3 class="card-title text-primary mb-3 d-flex align-items-center">
+                {% with color=plan.pet.species|species_color_class %}
+                <h3 class="card-title text-{{ color }} mb-3 d-flex align-items-center">
                     <i class="fas fa-calendar-check me-2"></i> Plan Details
                 </h3>
-                <p class="mb-2"><i class="fas fa-paw text-muted me-2"></i><strong>Pet:</strong> <a href="{% url 'pets:detail' plan.pet.pk %}">{{ plan.pet.name }}</a></p>
-                <p class="mb-2"><i class="fas fa-dna text-muted me-2"></i><strong>Species:</strong> <span class="text-capitalize">{{ plan.pet.species }}</span></p>
+                <p class="mb-2"><i class="fas fa-paw text-muted me-2"></i><strong>Pet:</strong> <a href="{% url 'pets:detail' plan.pet.pk %}" class="text-{{ color }} fw-bold">{{ plan.pet.name }}</a></p>
+                <p class="mb-2"><i class="{{ plan.pet.species|species_icon }} text-muted me-2"></i><strong>Species:</strong> <span class="text-capitalize text-{{ color }} fw-semibold">{{ plan.pet.species }}</span></p>
+                {% endwith %}
                 <p class="mb-2"><i class="fas fa-hourglass-start text-muted me-2"></i><strong>Start Date:</strong> {{ plan.plan_start_date|date:"F d, Y" }}</p>
                 <p class="mb-3"><i class="fas fa-badge-check text-muted me-2"></i><strong>Status:</strong> 
                     <span class="badge {% if plan.status == 'final' %}bg-success{% else %}bg-warning text-dark{% endif %} text-capitalize">

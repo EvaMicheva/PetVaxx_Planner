@@ -11,9 +11,9 @@ def status_badge(status: str) -> str:
         return "badge bg-secondary"
     status = str(status).lower()
     if status == "final":
-        return "badge bg-success shadow-sm"
+        return "badge bg-info text-white shadow-sm"
     if status == "draft":
-        return "badge bg-warning text-dark"
+        return "badge bg-warning text-dark shadow-sm"
     return "badge bg-secondary"
 
 
@@ -28,6 +28,19 @@ def species_icon(species: str) -> str:
     if "cat" in s:
         return "fas fa-cat"
     return "fas fa-paw"
+
+
+@register.filter
+def species_color_class(species: str) -> str:
+    """Return Bootstrap color class for a species."""
+    if not species:
+        return "primary"
+    s = str(species).lower()
+    if "dog" in s:
+        return "primary" # Blue/Indigo for dogs
+    if "cat" in s:
+        return "info"    # Purple for cats
+    return "success"     # Teal for others
 
 
 @register.filter

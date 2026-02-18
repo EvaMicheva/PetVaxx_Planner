@@ -17,13 +17,15 @@
             <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center mb-3">
-                        <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
-                            <i class="{{ pet.species|species_icon }} text-primary fs-4"></i>
+                        {% with color=pet.species|species_color_class %}
+                        <div class="rounded-circle bg-{{ color }} bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <i class="{{ pet.species|species_icon }} text-{{ color }} fs-4"></i>
                         </div>
                         <div>
                             <h5 class="card-title mb-0 fw-bold">{{ pet.name }}</h5>
-                            <span class="text-muted small text-capitalize">{{ pet.species }}</span>
+                            <span class="text-{{ color }} small text-capitalize fw-semibold">{{ pet.species }}</span>
                         </div>
+                        {% endwith %}
                     </div>
                     
                     <div class="mb-3">

@@ -12,13 +12,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2d6a4f;
-            --secondary-color: #1b4332;
-            --accent-color: #40916c;
-            --success-color: #52b788;
-            --bg-color: #f8faf9;
+            --primary-color: #4361ee; /* Indigo/Blue */
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0; /* Sky blue */
+            --success-color: #4ecdc4; /* Teal */
+            --warning-color: #ff9f1c; /* Amber/Orange */
+            --danger-color: #ff595e;  /* Warm Red */
+            --info-color: #7209b7;    /* Purple */
+            --bg-color: #f8f9fa;
             --card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            --card-hover-shadow: 0 0.5rem 1rem rgba(45, 106, 79, 0.15);
+            --card-hover-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
         }
 
         body {
@@ -27,12 +30,12 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            color: #2b2d42;
+            color: #343a40;
         }
 
         h1, h2, h3, h4, h5, h6, .navbar-brand {
             font-family: 'Poppins', sans-serif;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .bg-primary {
@@ -42,11 +45,13 @@
         .btn-primary {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
+            border-radius: 8px;
+            font-weight: 500;
         }
 
         .btn-primary:hover {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
         }
 
         .text-primary {
@@ -61,22 +66,40 @@
             color: var(--success-color) !important;
         }
 
+        .bg-warning {
+            background-color: var(--warning-color) !important;
+        }
+
+        .text-warning {
+            color: var(--warning-color) !important;
+        }
+        
+        .bg-info {
+            background-color: var(--info-color) !important;
+        }
+
+        .text-info {
+            color: var(--info-color) !important;
+        }
+
         .btn-light.text-primary {
             color: var(--primary-color) !important;
         }
 
         .card {
-            border-radius: 12px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             box-shadow: var(--card-hover-shadow) !important;
         }
 
         .navbar {
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 0.8rem 1rem;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%) !important;
         }
 
         main {
@@ -88,9 +111,18 @@
         }
         
         .badge {
-            font-weight: 500;
-            padding: 0.5em 0.8em;
-            border-radius: 6px;
+            font-weight: 600;
+            padding: 0.6em 1em;
+            border-radius: 20px;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+        }
+        
+        /* New decorative classes */
+        .header-section {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.05) 0%, rgba(76, 201, 240, 0.05) 100%);
+            border-radius: 20px;
         }
     </style>
 </head>

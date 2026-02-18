@@ -53,9 +53,11 @@
                     {% for plan in plans %}
                         <tr>
                             <td class="fw-bold">
-                                <a href="{% url 'pets:detail' plan.pet.pk %}" class="text-decoration-none">
-                                    <i class="fas fa-paw text-primary opacity-50 me-2"></i>{{ plan.pet.name }}
+                                {% with color=plan.pet.species|species_color_class %}
+                                <a href="{% url 'pets:detail' plan.pet.pk %}" class="text-decoration-none text-{{ color }}">
+                                    <i class="{{ plan.pet.species|species_icon }} opacity-50 me-2"></i>{{ plan.pet.name }}
                                 </a>
+                                {% endwith %}
                             </td>
                             <td><i class="far fa-calendar-alt text-muted me-1"></i> {{ plan.plan_start_date|format_date_long }}</td>
                             <td>
