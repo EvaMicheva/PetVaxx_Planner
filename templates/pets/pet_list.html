@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load planner_extras %}
 
 {% block title %}Pets List - VetVax Planner{% endblock %}
 
@@ -17,13 +18,7 @@
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center mb-3">
                         <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
-                            {% if pet.species == 'dog' %}
-                                <i class="fas fa-dog text-primary fs-4"></i>
-                            {% elif pet.species == 'cat' %}
-                                <i class="fas fa-cat text-primary fs-4"></i>
-                            {% else %}
-                                <i class="fas fa-paw text-primary fs-4"></i>
-                            {% endif %}
+                            <i class="{{ pet.species|species_icon }} text-primary fs-4"></i>
                         </div>
                         <div>
                             <h5 class="card-title mb-0 fw-bold">{{ pet.name }}</h5>
@@ -34,7 +29,7 @@
                     <div class="mb-3">
                         <p class="card-text mb-1 small">
                             <i class="fas fa-cake-candles text-muted me-2"></i>
-                            <strong>Born:</strong> {{ pet.birth_date|date:"F d, Y" }}
+                            <strong>Born:</strong> {{ pet.birth_date|format_date_long }} ({{ pet.birth_date|age_years }}y)
                         </p>
                         <p class="card-text mb-1 small">
                             <i class="fas fa-house-user text-muted me-2"></i>

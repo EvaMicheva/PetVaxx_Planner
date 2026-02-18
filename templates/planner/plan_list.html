@@ -1,14 +1,40 @@
 {% extends "base.html" %}
+{% load planner_extras %}
 
 {% block title %}Vaccination Plans - VetVax Planner{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
     <h2 class="mb-0">Vaccination Plans</h2>
-    <a href="{% url 'planner:add' %}" class="btn btn-primary rounded-pill px-4">
-        <i class="fas fa-plus me-2"></i>Create Plan
-    </a>
+    <div class="d-flex gap-2">
+        <a href="{% url 'planner:add' %}" class="btn btn-primary rounded-pill px-4">
+            <i class="fas fa-plus me-2"></i>Create Plan
+        </a>
+    </div>
 </div>
+
+<form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-sm-4">
+        <label class="form-label small text-muted">Filter by status</label>
+        <select name="status" class="form-select">
+            <option value="" {% if not current_status %}selected{% endif %}>All</option>
+            <option value="draft" {% if current_status == 'draft' %}selected{% endif %}>Draft</option>
+            <option value="final" {% if current_status == 'final' %}selected{% endif %}>Final</option>
+        </select>
+    </div>
+    <div class="col-sm-4">
+        <label class="form-label small text-muted">Sort by</label>
+        <select name="order" class="form-select">
+            <option value="-created" {% if current_order == '-created' %}selected{% endif %}>Newest created</option>
+            <option value="created_asc" {% if current_order == 'created_asc' %}selected{% endif %}>Oldest created</option>
+            <option value="start_asc" {% if current_order == 'start_asc' %}selected{% endif %}>Start date ↑</option>
+            <option value="start_desc" {% if current_order == 'start_desc' %}selected{% endif %}>Start date ↓</option>
+        </select>
+    </div>
+    <div class="col-sm-4 d-grid">
+        <button class="btn btn-outline-secondary">Apply</button>
+    </div>
+</form>
 
 <div class="card shadow-sm border-0">
     <div class="card-body p-0">
@@ -31,9 +57,9 @@
                                     <i class="fas fa-paw text-primary opacity-50 me-2"></i>{{ plan.pet.name }}
                                 </a>
                             </td>
-                            <td><i class="far fa-calendar-alt text-muted me-1"></i> {{ plan.plan_start_date|date:"M d, Y" }}</td>
+                            <td><i class="far fa-calendar-alt text-muted me-1"></i> {{ plan.plan_start_date|format_date_long }}</td>
                             <td>
-                                <span class="badge {% if plan.status == 'final' %}bg-success shadow-sm{% else %}bg-warning text-dark{% endif %} text-capitalize rounded-pill">
+                                <span class="{{ plan.status|status_badge }} text-capitalize rounded-pill">
                                     {{ plan.get_status_display }}
                                 </span>
                             </td>

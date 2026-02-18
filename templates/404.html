@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - VetVax Planner{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <div class="mb-4">
+        <i class="fas fa-compass text-primary opacity-25" style="font-size: 120px;"></i>
+    </div>
+    <h1 class="fw-bold mb-3">Oops! Page not found.</h1>
+    <p class="text-muted mb-4">The page you're looking for doesn't exist or may have been moved.</p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'planner:home' %}" class="btn btn-primary"><i class="fas fa-home me-2"></i> Go to Homepage</a>
+        <a href="{% url 'pets:list' %}" class="btn btn-outline-secondary"><i class="fas fa-paw me-2"></i> Browse Pets</a>
+        <a href="{% url 'planner:list' %}" class="btn btn-outline-secondary"><i class="fas fa-calendar-check me-2"></i> View Plans</a>
+        <a href="{% url 'vaccines:list' %}" class="btn btn-outline-secondary"><i class="fas fa-syringe me-2"></i> Vaccines</a>
+    </div>
+</div>
+{% endblock %}

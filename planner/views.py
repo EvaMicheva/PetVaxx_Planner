@@ -20,7 +20,29 @@ class PlanListView(ListView):
     model = Plan
     template_name = "planner/plan_list.html"
     context_object_name = "plans"
-    ordering = ["-created_at"]
+
+    def get_queryset(self):
+        qs = super().get_queryset().select_related("pet")
+        status = self.request.GET.get("status")
+        if status in {"draft", "final"}:
+            qs = qs.filter(status=status)
+        order = self.request.GET.get("order")
+        if order == "start_asc":
+            qs = qs.order_by("plan_start_date", "pet__name")
+        elif order == "start_desc":
+            qs = qs.order_by("-plan_start_date", "pet__name")
+        elif order == "created_asc":
+            qs = qs.order_by("created_at")
+        else:
+            qs = qs.order_by("-created_at")
+        return qs
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["current_status"] = self.request.GET.get("status", "")
+        ctx["current_order"] = self.request.GET.get("order", "-created")
+        ctx["total_count"] = Plan.objects.count()
+        return ctx
 
 class PlanDetailView(DetailView):
     model = Plan

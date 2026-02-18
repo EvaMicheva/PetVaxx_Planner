@@ -23,3 +23,6 @@ urlpatterns = [
     path("pets/", include("pets.urls")),
     path("vaccines/", include("vaccines.urls")),
 ]
+
+# Custom error handlers
+handler404 = "VetVax_Planner.views.custom_404"
