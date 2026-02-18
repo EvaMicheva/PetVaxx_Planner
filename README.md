@@ -1,6 +1,12 @@
 # VetVax Planner
 
-VetVax Planner is a Django-based web application designed for managing veterinary vaccination schedules for pets. It helps pet owners and veterinarians track vaccination history and plan future doses based on species-specific recommendation rules.
+VetVax Planner is a Django-based web application designed for managing veterinary vaccination schedules for pets. It helps pet owners track vaccination history and plan future doses based on species-specific recommendation rules.
+
+### ⚠️ Disclaimer & Educational Purpose
+This application was developed by a **Veterinary Technician** as a **mock model** for educational purposes to learn the Django web framework. 
+
+- **Professional Advice**: This application **cannot and does not remove the need for a veterinarian**. Always consult with a qualified veterinarian for medical advice, diagnoses, or treatment for your pets.
+- **Accuracy**: The vaccination schedules and recommendation logic are based on the **Stiko Vet (Ständige Impfkommission Veterinärmedizin) requirements in Germany as of 2026**. However, since this is a learning project, it should not be used as a primary source for medical decisions.
 
 ## Features
 
