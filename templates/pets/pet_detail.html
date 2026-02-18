@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{{ pet.name }} - VetVax Planner{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h2 class="card-title text-primary mb-0">{{ pet.name }}</h2>
+                    <span class="badge bg-info text-dark text-capitalize">{{ pet.species }}</span>
+                </div>
+                <hr>
+                <p class="mb-2"><strong>Born:</strong> {{ pet.birth_date|date:"F d, Y" }}</p>
+                <p class="mb-2"><strong>Age:</strong> {{ pet.age_in_weeks }} weeks</p>
+                <p class="mb-2 text-capitalize"><strong>Lifestyle:</strong> {{ pet.lifestyle }}</p>
+                <p class="mb-3">
+                    <strong>Travels Abroad:</strong> 
+                    {% if pet.travels_abroad %}
+                        <span class="badge bg-warning text-dark">Yes</span>
+                    {% else %}
+                        <span class="text-muted">No</span>
+                    {% endif %}
+                </p>
+                {% if pet.notes %}
+                <div class="mb-4">
+                    <strong>Notes:</strong>
+                    <p class="text-muted small mt-1">{{ pet.notes }}</p>
+                </div>
+                {% endif %}
+                <div class="d-grid gap-2">
+                    <a href="{% url 'pets:update' pet.pk %}" class="btn btn-outline-primary">Edit Pet</a>
+                    <a href="{% url 'pets:delete' pet.pk %}" class="btn btn-outline-danger">Delete Pet</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-8">
+        <h3 class="mb-3">Vaccination Plans</h3>
+        {% for plan in pet.plans.all %}
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Plan started on {{ plan.plan_start_date|date:"F d, Y" }}</h5>
+                    <span class="badge {% if plan.status == 'final' %}bg-success{% else %}bg-secondary{% endif %} text-capitalize">{{ plan.status }}</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Vaccine</th>
+                                    <th>Dose #</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for dose in plan.doses.all %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'vaccines:detail' dose.vaccine.pk %}" class="text-decoration-none">
+                                                {{ dose.vaccine.name }}
+                                            </a>
+                                        </td>
+                                        <td>{{ dose.dose_number }}</td>
+                                        <td>{{ dose.due_date|date:"M d, Y" }}</td>
+                                        <td>
+                                            {% if dose.is_booster %}
+                                                <span class="badge bg-info text-dark">Booster</span>
+                                            {% else %}
+                                                <span class="badge bg-light text-dark border">Primary</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center py-3 text-muted">No doses scheduled in this plan.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-info shadow-sm">
+                This pet doesn't have any vaccination plans yet.
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

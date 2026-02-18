@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}{{ vaccine.name }} - VetVax Planner{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'vaccines:list' %}">Vaccines</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ vaccine.name }}</li>
+  </ol>
+</nav>
+
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="text-primary mb-0">{{ vaccine.name }}</h2>
+                    <span class="badge {% if vaccine.category == 'core' %}bg-primary{% else %}bg-secondary{% endif %} fs-6">
+                        {{ vaccine.get_category_display }}
+                    </span>
+                </div>
+                <div class="mb-3">
+                    {% for species in vaccine.applicable_species.all %}
+                        <span class="badge bg-success bg-opacity-10 text-dark border border-success border-opacity-50 fw-bold">{{ species.name }}</span>
+                    {% endfor %}
+                </div>
+                <p class="lead">{{ vaccine.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <h3 class="mb-3">Recommendation Rules</h3>
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Species</th>
+                                <th>Dose #</th>
+                                <th>Timing</th>
+                                <th>Conditions</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rule in vaccine.rules.all %}
+                                <tr>
+                                    <td class="fw-bold">{{ rule.species.name }}</td>
+                                    <td>
+                                        <span class="badge rounded-pill bg-light text-dark border">
+                                            Dose {{ rule.dose_number }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if rule.due_age_weeks %}
+                                            <span class="badge bg-success bg-opacity-10 text-dark border border-success border-opacity-50 fw-bold">
+                                                <i class="fas fa-clock me-1 text-success"></i> {{ rule.due_age_weeks }} weeks
+                                            </span>
+                                        {% elif rule.due_age_months %}
+                                            <span class="badge bg-success bg-opacity-10 text-dark border border-success border-opacity-50 fw-bold">
+                                                <i class="fas fa-calendar-alt me-1 text-success"></i> {{ rule.due_age_months }} months
+                                            </span>
+                                        {% endif %}
+                                        
+                                        {% if rule.repeat_every_months %}
+                                            <div class="mt-1">
+                                                <span class="badge bg-secondary">
+                                                    <i class="fas fa-redo me-1 text-white"></i> Every {{ rule.repeat_every_months }} months
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                        
+                                        {% if not rule.due_age_weeks and not rule.due_age_months and not rule.repeat_every_months %}
+                                            <span class="text-muted small">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if rule.requires_outdoor %}
+                                            <span class="badge bg-success shadow-sm">
+                                                <i class="fas fa-tree me-1"></i> Outdoor
+                                            </span>
+                                        {% endif %}
+                                        {% if rule.requires_travel %}
+                                            <span class="badge bg-warning text-dark shadow-sm">
+                                                <i class="fas fa-plane me-1"></i> Travel
+                                            </span>
+                                        {% endif %}
+                                        {% if not rule.requires_outdoor and not rule.requires_travel %}
+                                            <span class="badge bg-light text-muted border">General</span>
+                                        {% endif %}
+                                    </td>
+                                    <td><small class="text-muted">{{ rule.notes }}</small></td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">No specific rules defined for this vaccine.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

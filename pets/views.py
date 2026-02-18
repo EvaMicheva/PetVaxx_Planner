@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from .models import Pet
+from .forms import PetForm
 
 def pet_list(request):
     pets = Pet.objects.all()
@@ -15,7 +16,7 @@ class PetDetailView(DetailView):
 
 class PetCreateView(CreateView):
     model = Pet
-    fields = ["name", "species", "birth_date", "lifestyle", "travels_abroad", "notes"]
+    form_class = PetForm
     template_name = "pets/pet_form.html"
     success_url = reverse_lazy("pets:list")
 
@@ -25,7 +26,7 @@ class PetCreateView(CreateView):
 
 class PetUpdateView(UpdateView):
     model = Pet
-    fields = ["name", "species", "birth_date", "lifestyle", "travels_abroad", "notes"]
+    form_class = PetForm
     template_name = "pets/pet_form.html"
     success_url = reverse_lazy("pets:list")
 

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}{% if object %}Edit{% else %}Create{% endif %} Plan - VetVax Planner{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">{% if object %}Edit Plan for {{ object.pet.name }}{% else %}Create New Plan{% endif %}</h2>
+                
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        <div class="mb-4">
+                            <label for="{{ field.id_for_label }}" class="form-label fw-bold">
+                                {% if field.name == "pet" %}<i class="fas fa-paw me-1 text-muted"></i>
+                                {% elif field.name == "plan_start_date" %}<i class="fas fa-calendar-day me-1 text-muted"></i>
+                                {% elif field.name == "status" %}<i class="fas fa-toggle-on me-1 text-muted"></i>
+                                {% endif %}
+                                {{ field.label }}
+                            </label>
+                            
+                            <div class="{% if field.errors %}is-invalid{% endif %}">
+                                {% if field.name == 'plan_start_date' %}
+                                    <input type="date" name="{{ field.name }}" 
+                                           id="{{ field.id_for_label }}" 
+                                           class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}"
+                                           value="{{ field.value|date:'Y-m-d'|default:field.value|default:'' }}">
+                                {% elif field.field.choices %}
+                                    <select name="{{ field.name }}" class="form-select shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}">
+                                        {% for value, text in field.field.choices %}
+                                            <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ text }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}
+                                    {{ field }}
+                                {% endif %}
+                            </div>
+                            
+                            {% if field.help_text %}
+                                <div class="form-text text-muted small mt-1">{{ field.help_text }}</div>
+                            {% endif %}
+                            
+                            {% for error in field.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'planner:list' %}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4 shadow">
+                            {% if object %}Save Changes{% else %}Create Plan{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Apply Bootstrap classes to Django form fields
+    document.querySelectorAll('input:not([type="checkbox"]):not([type="date"]), select, textarea').forEach(el => {
+        el.classList.add('form-control');
+    });
+    document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+        el.classList.add('form-check-input');
+    });
+    document.querySelectorAll('select').forEach(el => {
+        el.classList.add('form-select');
+    });
+</script>
+{% endblock %}

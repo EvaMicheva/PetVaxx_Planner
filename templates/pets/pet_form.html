@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if object %}Edit Pet: {{ object.name }}{% else %}Add New Pet{% endif %} - VetVax Planner
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h2 class="card-title mb-4">
+                    {% if object %}Edit Pet: {{ object.name }}{% else %}Add New Pet{% endif %}
+                </h2>
+                
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label fw-bold">
+                                {% if field.name == "name" %}<i class="fas fa-signature me-1 text-muted"></i>
+                                {% elif field.name == "species" %}<i class="fas fa-dna me-1 text-muted"></i>
+                                {% elif field.name == "birth_date" %}<i class="fas fa-cake-candles me-1 text-muted"></i>
+                                {% elif field.name == "lifestyle" %}<i class="fas fa-house-user me-1 text-muted"></i>
+                                {% elif field.name == "notes" %}<i class="fas fa-sticky-note me-1 text-muted"></i>
+                                {% endif %}
+                                {{ field.label }}
+                            </label>
+                            <div class="{% if field.errors %}is-invalid{% endif %}">
+                                {% if field.field.widget.input_type == "checkbox" %}
+                                    <div class="form-check form-switch p-2 ps-5 border rounded bg-light bg-opacity-50">
+                                        <input type="checkbox" name="{{ field.name }}" class="form-check-input" id="{{ field.id_for_label }}" {% if field.value %}checked{% endif %}>
+                                        <label class="form-check-label" for="{{ field.id_for_label }}">
+                                            {% if field.name == "travels_abroad" %}
+                                                <i class="fas fa-plane-departure me-1 text-primary"></i> Travels Abroad?
+                                            {% else %}
+                                                {{ field.help_text|default:field.label }}
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                {% elif field.name == "birth_date" %}
+                                    <input type="date" name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|date:'Y-m-d'|default:field.value|default:'' }}">
+                                {% elif field.name == "notes" %}
+                                    <textarea name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" rows="3" placeholder="Any specific medical history or allergies?">{{ field.value|default:"" }}</textarea>
+                                {% elif field.field.choices %}
+                                    <select name="{{ field.name }}" class="form-select shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}">
+                                        {% for value, text in field.field.choices %}
+                                            <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ text }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}
+                                    <input type="{{ field.field.widget.input_type|default:'text' }}" name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}" placeholder="Enter {{ field.label|lower }}">
+                                {% endif %}
+                            </div>
+                            {% if field.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ field.errors|striptags }}
+                                </div>
+                            {% endif %}
+                            {% if field.help_text and field.field.widget.input_type != "checkbox" %}
+                                <div class="form-text small text-muted">{{ field.help_text }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <a href="{% if object %}{% url 'pets:detail' object.pk %}{% else %}{% url 'pets:list' %}{% endif %}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            {% if object %}Save Changes{% else %}Create Pet{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

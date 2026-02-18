@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Vaccines List - VetVax Planner{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2>Available Vaccines</h2>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Vaccine Name</th>
+                        <th>Category</th>
+                        <th>Species</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vaccine in vaccines %}
+                        <tr>
+                            <td class="fw-bold">
+                                <a href="{% url 'vaccines:detail' vaccine.pk %}" class="text-decoration-none d-flex align-items-center">
+                                    <i class="fas fa-syringe me-2 text-primary opacity-50"></i>{{ vaccine.name }}
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge {% if vaccine.category == 'core' %}bg-primary shadow-sm{% else %}bg-secondary{% endif %}">
+                                    {{ vaccine.get_category_display }}
+                                </span>
+                            </td>
+                            <td>
+                                {% for species in vaccine.applicable_species.all %}
+                                    <span class="badge bg-success bg-opacity-10 text-dark rounded-pill border border-success border-opacity-50 fw-bold">{{ species.name }}</span>
+                                {% empty %}
+                                    <span class="text-muted small">Any</span>
+                                {% endfor %}
+                            </td>
+                            <td><small class="text-muted">{{ vaccine.description|truncatewords:20 }}</small></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center py-5 text-muted">
+                                <div class="mb-3">
+                                    <i class="fas fa-vial-circle-check opacity-25" style="font-size: 80px;"></i>
+                                </div>
+                                <p class="fs-5 mb-0">No vaccines found in the database.</p>
+                                <small>Load default data or add vaccines via admin.</small>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

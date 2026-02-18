@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Plan for {{ plan.pet.name }} - VetVax Planner{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body">
+                <h3 class="card-title text-primary mb-3 d-flex align-items-center">
+                    <i class="fas fa-calendar-check me-2"></i> Plan Details
+                </h3>
+                <p class="mb-2"><i class="fas fa-paw text-muted me-2"></i><strong>Pet:</strong> <a href="{% url 'pets:detail' plan.pet.pk %}">{{ plan.pet.name }}</a></p>
+                <p class="mb-2"><i class="fas fa-dna text-muted me-2"></i><strong>Species:</strong> <span class="text-capitalize">{{ plan.pet.species }}</span></p>
+                <p class="mb-2"><i class="fas fa-hourglass-start text-muted me-2"></i><strong>Start Date:</strong> {{ plan.plan_start_date|date:"F d, Y" }}</p>
+                <p class="mb-3"><i class="fas fa-badge-check text-muted me-2"></i><strong>Status:</strong> 
+                    <span class="badge {% if plan.status == 'final' %}bg-success{% else %}bg-warning text-dark{% endif %} text-capitalize">
+                        {{ plan.get_status_display }}
+                    </span>
+                </p>
+                <hr>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'planner:update' plan.pk %}" class="btn btn-outline-secondary"><i class="fas fa-edit me-1"></i> Edit Plan</a>
+                    <a href="{% url 'planner:list' %}" class="btn btn-link"><i class="fas fa-arrow-left me-1"></i> Back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h4 class="card-title mb-4 d-flex align-items-center">
+                                    <i class="fas fa-syringe me-2 text-primary"></i> Scheduled Doses
+                                </h4>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Vaccine</th>
+                                <th>Dose #</th>
+                                <th>Due Date</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for dose in plan.doses.all %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'vaccines:detail' dose.vaccine.pk %}" class="text-decoration-none fw-bold">
+                                            {{ dose.vaccine.name }}
+                                        </a>
+                                        {% if dose.is_booster %}
+                                            <span class="badge bg-success bg-opacity-10 text-dark ms-1 border border-success border-opacity-50 fw-bold">Booster</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ dose.dose_number }}</td>
+                                    <td>
+                                        {{ dose.due_date|date:"M d, Y" }}
+                                    </td>
+                                    <td><small class="text-muted">{{ dose.notes|default:"-" }}</small></td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">No doses scheduled for this plan.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

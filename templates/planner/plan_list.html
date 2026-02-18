@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Vaccination Plans - VetVax Planner{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Vaccination Plans</h2>
+    <a href="{% url 'planner:add' %}" class="btn btn-primary rounded-pill px-4">
+        <i class="fas fa-plus me-2"></i>Create Plan
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Pet</th>
+                        <th>Start Date</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plan in plans %}
+                        <tr>
+                            <td class="fw-bold">
+                                <a href="{% url 'pets:detail' plan.pet.pk %}" class="text-decoration-none">
+                                    <i class="fas fa-paw text-primary opacity-50 me-2"></i>{{ plan.pet.name }}
+                                </a>
+                            </td>
+                            <td><i class="far fa-calendar-alt text-muted me-1"></i> {{ plan.plan_start_date|date:"M d, Y" }}</td>
+                            <td>
+                                <span class="badge {% if plan.status == 'final' %}bg-success shadow-sm{% else %}bg-warning text-dark{% endif %} text-capitalize rounded-pill">
+                                    {{ plan.get_status_display }}
+                                </span>
+                            </td>
+                            <td><small class="text-muted">{{ plan.created_at|date:"Y-m-d H:i" }}</small></td>
+                            <td>
+                                <div class="btn-group shadow-sm">
+                                    <a href="{% url 'planner:detail' plan.pk %}" class="btn btn-sm btn-white border">
+                                        <i class="fas fa-eye text-primary"></i>
+                                    </a>
+                                    <a href="{% url 'planner:update' plan.pk %}" class="btn btn-sm btn-white border">
+                                        <i class="fas fa-edit text-secondary"></i>
+                                    </a>
+                                    <a href="{% url 'planner:delete' plan.pk %}" class="btn btn-sm btn-white border text-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5 text-muted">
+                                <div class="mb-3">
+                                    <i class="fas fa-calendar-plus opacity-25" style="font-size: 80px;"></i>
+                                </div>
+                                <p class="fs-5">No vaccination plans found.</p>
+                                <a href="{% url 'planner:quick_add' %}" class="btn btn-primary rounded-pill mt-2">
+                                    <i class="fas fa-magic me-2"></i>Generate Your First Plan
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

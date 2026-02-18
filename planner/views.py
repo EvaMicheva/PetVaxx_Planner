@@ -6,6 +6,7 @@ from django.utils import timezone
 from pets.models import Pet
 from vaccines.models import Vaccine
 from .models import Plan
+from .forms import PlanForm, QuickPlanForm
 from .utils import generate_doses_for_plan
 
 def home(request):
@@ -28,7 +29,7 @@ class PlanDetailView(DetailView):
 
 class PlanCreateView(CreateView):
     model = Plan
-    fields = ["pet", "plan_start_date", "status"]
+    form_class = PlanForm
     template_name = "planner/plan_form.html"
     success_url = reverse_lazy("planner:list")
 
@@ -38,7 +39,7 @@ class PlanCreateView(CreateView):
 
 class PlanUpdateView(UpdateView):
     model = Plan
-    fields = ["pet", "plan_start_date", "status"]
+    form_class = PlanForm
     template_name = "planner/plan_form.html"
     success_url = reverse_lazy("planner:list")
 
@@ -57,39 +58,28 @@ class PlanDeleteView(DeleteView):
 
 def quick_plan_create(request):
     if request.method == "POST":
-        name = request.POST.get("name")
-        species = request.POST.get("species")
-        birth_date = request.POST.get("birth_date")
-        lifestyle = request.POST.get("lifestyle", "mixed")
-        travels_abroad = request.POST.get("travels_abroad") == "on"
+        form = QuickPlanForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            pet = Pet.objects.create(
+                name=cd["name"],
+                species=cd["species"],
+                birth_date=cd["birth_date"],
+                lifestyle=cd["lifestyle"],
+                travels_abroad=cd["travels_abroad"],
+            )
+            plan = Plan.objects.create(
+                pet=pet,
+                plan_start_date=timezone.localdate(),
+                status="draft",
+            )
+            # Generate Doses
+            generate_doses_for_plan(plan)
+            messages.success(request, f"Plan generated for {pet.name} with all recommended doses!")
+            return redirect(reverse("planner:detail", kwargs={"pk": plan.pk}))
+    else:
+        form = QuickPlanForm()
 
-        try:
-            from datetime import datetime
-            birth_date_obj = datetime.strptime(birth_date, "%Y-%m-%d").date()
-        except (ValueError, TypeError):
-            birth_date_obj = timezone.localdate()
-
-        pet = Pet.objects.create(
-            name=name,
-            species=species,
-            birth_date=birth_date_obj,
-            lifestyle=lifestyle,
-            travels_abroad=travels_abroad
-        )
-
-        plan = Plan.objects.create(
-            pet=pet,
-            plan_start_date=timezone.localdate(),
-            status="draft"
-        )
-        
-        # Generate Doses
-        generate_doses_for_plan(plan)
-        
-        messages.success(request, f"Plan generated for {pet.name} with all recommended doses!")
-        return redirect(reverse("planner:detail", kwargs={"pk": plan.pk}))
-        
     return render(request, "planner/quick_plan_form.html", {
-        "species_choices": Pet._meta.get_field("species").choices,
-        "lifestyle_choices": Pet._meta.get_field("lifestyle").choices,
+        "form": form,
     })
