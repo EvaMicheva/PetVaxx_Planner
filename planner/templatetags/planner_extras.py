@@ -6,7 +6,6 @@ register = template.Library()
 
 @register.filter
 def status_badge(status: str) -> str:
-    """Return Bootstrap badge classes for a plan status."""
     if not status:
         return "badge bg-secondary"
     status = str(status).lower()
@@ -19,7 +18,6 @@ def status_badge(status: str) -> str:
 
 @register.filter
 def species_icon(species: str) -> str:
-    """Font Awesome icon class based on species code/name."""
     if not species:
         return "fas fa-paw"
     s = str(species).lower()
@@ -32,7 +30,6 @@ def species_icon(species: str) -> str:
 
 @register.filter
 def species_color_class(species: str) -> str:
-    """Return Bootstrap color class for a species."""
     if not species:
         return "primary"
     s = str(species).lower()
@@ -45,7 +42,6 @@ def species_color_class(species: str) -> str:
 
 @register.filter
 def format_date_long(value):
-    """Format a date in a friendly long form."""
     if not value:
         return ""
     try:
@@ -56,7 +52,6 @@ def format_date_long(value):
 
 @register.filter
 def age_years(birth_date) -> int:
-    """Compute age in whole years from a birth_date."""
     if not birth_date:
         return 0
     today = timezone.localdate()

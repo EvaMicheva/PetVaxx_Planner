@@ -32,8 +32,8 @@ class PetForm(forms.ModelForm):
             "notes": "Notes",
         }
         help_texts = {
-            "name": "Enter the name used for your pet at the clinic.",
-            "species": "Choose the species that best describes your pet.",
+            "name": "Enter your pet's name.",
+            "species": "Choose from the list or enter a custom species name.",
             "birth_date": "Use the calendar to select the correct date.",
             "lifestyle": "Used to determine optional vaccine recommendations.",
             "travels_abroad": "Enable if your pet travels internationally.",
@@ -59,9 +59,9 @@ class PetForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         birth = None
         if self.is_bound:
-            raw = self.data.get(self.add_prefix("birth_date"))
+            date = self.data.get(self.add_prefix("birth_date"))
             try:
-                birth = timezone.datetime.strptime(raw, "%Y-%m-%d").date() if raw else None
+                birth = timezone.datetime.strptime(date, "%Y-%m-%d").date() if date else None
             except Exception:
                 birth = None
         elif self.instance and self.instance.pk:
@@ -71,6 +71,6 @@ class PetForm(forms.ModelForm):
 
     def clean_birth_date(self):
         birth_date = self.cleaned_data.get("birth_date")
-        if birth_date and birth_date > timezone.localdate():
+        if birth_date is not None and birth_date > timezone.localdate():
             raise forms.ValidationError("Birth date cannot be in the future.")
         return birth_date
