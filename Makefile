@@ -1,7 +1,3 @@
-PYTHON = python
-MANAGE = $(PYTHON) manage.py
-LOAD = $(MANAGE) loaddata
-
 VACCINES_FIXTURE = vaccines/fixtures/petvaxx_seed_data_fixture.json
 PETS_FIXTURE = pets/fixtures/pets_data.json
 PLANNER_FIXTURE = planner/fixtures/plans_and_doses.json
@@ -11,12 +7,12 @@ PLANNER_FIXTURE = planner/fixtures/plans_and_doses.json
 all: load-all
 
 load-vaccines:
-	$(LOAD) $(VACCINES_FIXTURE)
+	python manage.py loaddata $(VACCINES_FIXTURE)
 
 load-pets:
-	$(LOAD) $(PETS_FIXTURE)
+	python manage.py loaddata $(PETS_FIXTURE)
 
 load-planner:
-	$(LOAD) $(PLANNER_FIXTURE)
+	python manage.py loaddata $(PLANNER_FIXTURE)
 
 load-all: load-vaccines load-pets load-planner
