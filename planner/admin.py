@@ -13,7 +13,18 @@ class PlanAdmin(admin.ModelAdmin):
     list_display = ["pet", "plan_start_date", "status", "created_at"]
     list_filter = ["status", "plan_start_date"]
     search_fields = ["pet__name"]
+    def refresh_doses(self, request, queryset):
+        from planner.utils import generate_doses_for_plan
+        count = 0
+        for plan in queryset:
+            plan.doses.all().delete()
+            generate_doses_for_plan(plan)
+            count += 1
+        self.message_user(request, f"Successfully refreshed doses for {count} plans.")
+    refresh_doses.short_description = "Refresh doses based on current rules"
+
     inlines = [DoseInline]
+    actions = ["refresh_doses"]
 
 
 @admin.register(Dose)

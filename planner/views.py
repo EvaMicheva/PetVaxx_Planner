@@ -56,8 +56,11 @@ class PlanCreateView(CreateView):
     success_url = reverse_lazy("planner:list")
 
     def form_valid(self, form):
+        plan = form.save()
+        if not plan.doses.exists():
+            generate_doses_for_plan(plan)
         messages.success(self.request, "Vaccination plan created!")
-        return super().form_valid(form)
+        return redirect(self.success_url)
 
 class PlanUpdateView(UpdateView):
     model = Plan

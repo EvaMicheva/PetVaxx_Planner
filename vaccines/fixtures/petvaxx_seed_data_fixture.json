@@ -224,12 +224,12 @@
       "vaccine": 3,
       "species": 1,
       "dose_number": 1,
-      "due_age_weeks": 8,
+      "due_age_weeks": 12,
       "due_age_months": null,
       "repeat_every_months": 36,
       "requires_outdoor": false,
       "requires_travel": false,
-      "notes": "Rabies at 8 weeks; then every 3 years."
+      "notes": "Rabies at 12 weeks; then Booster after 1 year."
     }
   },
   {
@@ -244,7 +244,7 @@
       "repeat_every_months": 36,
       "requires_outdoor": false,
       "requires_travel": false,
-      "notes": "Booster at 1 year; then every 3 years."
+      "notes": "Booster at 12 months; then every 3 years."
     }
   },
   {
@@ -364,7 +364,7 @@
       "repeat_every_months": 36,
       "requires_outdoor": true,
       "requires_travel": false,
-      "notes": "Outdoor cats Rabies; then every 3 years."
+      "notes": "Outdoor cats Rabies; first 12 weeks then Booster after 1 year."
     }
   },
   {

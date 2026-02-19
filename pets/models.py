@@ -22,7 +22,7 @@ class Pet(models.Model):
 
     def clean(self):
         if self.birth_date > timezone.localdate():
-            raise ValidationError({"birth_date": "Birth date cannot be in the future."})
+            raise ValidationError({"birth_date": "Birth date cannot be in the future, please use a valid date."})
 
     def age_in_days(self) -> int:
         return max(0, (timezone.localdate() - self.birth_date).days)
