@@ -89,3 +89,9 @@ Access the admin interface at `http://127.0.0.1:8000/admin/` (requires creating 
 - `vaccines/`: Vaccine definitions and recommendation logic.
 - `planner/`: Management of vaccination plans and individual doses.
 - `VetVax_Planner/`: Core Django project settings and configuration.
+
+## 🚀 Future Roadmap
+- **Medical History & Vaccine Records**: Implement a `VaccinationRecord` model to track actual shot dates and history.
+- **Smart Restart Logic**: Automatically detect "expired" vaccines (like Lepto or FeLV) and generate a 2-dose "restart" schedule (4 weeks apart) if the last dose was too long ago.
+- **Overdue Notifications**: Alert users when a booster is missed or a vaccination series needs to be restarted.
+- **Enhanced UI**: Add a dashboard for quick overview of all pending vaccinations across all pets.

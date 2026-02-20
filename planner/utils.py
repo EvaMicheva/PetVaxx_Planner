@@ -9,6 +9,12 @@ def add_months(birthday, months):
 
 
 def generate_doses_for_plan(plan):
+
+    """
+    Generates doses based on age and rules.
+    TODO: Add check for VaccinationRecord to handle 'Expired' status for vaccines like Lepto or FelV.
+    """
+
     from vaccines.models import RecommendationRule, Species
     from .models import Dose
 
@@ -40,6 +46,11 @@ def generate_doses_for_plan(plan):
         elif rule.due_age_months:
             due_date = add_months(pet.birth_date, rule.due_age_months)
 
+        elif rule.repeat_every_months:
+            due_date = pet.birth_date
+            while due_date < plan.plan_start_date:
+                due_date = add_months(due_date, rule.repeat_every_months)
+
         if not due_date or due_date < plan.plan_start_date:
             continue
 
@@ -48,11 +59,11 @@ def generate_doses_for_plan(plan):
             vaccine=rule.vaccine,
             dose_number=rule.dose_number,
             due_date=due_date,
-            is_booster=bool(rule.dose_number >= 2),
+            is_booster=True if rule.repeat_every_months or rule.dose_number >= 2 else False,
             notes=rule.notes,
         )
-
         doses.append(dose)
 
     return doses
+
 
