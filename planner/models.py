@@ -6,9 +6,13 @@ from .planner_choices import PlanStatus
 from datetime import timedelta
 from django.utils import timezone
 
-# TODO: Future Enhancement - Integration with Medical History
-# If a vaccine series (e.g. Lepto) is expired (> 12 months),
-# the generator should trigger a 2-dose "Restart" protocol.
+"""
+TODO: Future Enhancement - Integration with Medical History
+- If a vaccine series (e.g. Lepto) is expired (> 12 months),
+- the generator should trigger a 2-dose "Restart" protocol.
+
+"""
+
 
 class Plan(models.Model):
     pet = models.ForeignKey("pets.Pet", on_delete=models.CASCADE, related_name="plans")

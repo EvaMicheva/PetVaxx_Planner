@@ -14,8 +14,10 @@ def add_months(birthday: date, months: int) -> date:
 
 class DoseGenerator:
     """
-    TODO: handle expired vaccines like Lepto or FelV.
-    TODO: handle vaccine history.
+    TODO: Implement logic for:
+    -handle expired vaccines like Lepto or FelV.
+    -handle vaccine history.
+
     """
 
 
