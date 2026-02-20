@@ -38,7 +38,7 @@ class PlanForm(forms.ModelForm):
 
     def clean_plan_start_date(self):
         date = self.cleaned_data.get("plan_start_date")
-        if date is not None and date > timezone.localdate() + timedelta(days=365*5):
+        if date and date > timezone.localdate() + timedelta(days=365*5):
             raise forms.ValidationError("Start date seems too far in the future. Please pick a nearer date.")
         return date
 

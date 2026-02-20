@@ -66,7 +66,7 @@ class PetForm(forms.ModelForm):
     def clean_birth_date(self):
         birth_date = self.cleaned_data.get("birth_date")
 
-        if birth_date is not None and birth_date > timezone.localdate():
+        if birth_date and birth_date > timezone.localdate():
             raise forms.ValidationError(
                 "Birth date cannot be in the future."
             )

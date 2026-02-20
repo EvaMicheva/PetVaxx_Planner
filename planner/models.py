@@ -3,6 +3,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 from .planner_choices import PlanStatus
+from datetime import timedelta
+from django.utils import timezone
 
 
 class Plan(models.Model):
@@ -16,8 +18,13 @@ class Plan(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
-        if self.pet_id and self.plan_start_date < self.pet.birth_date:
-            raise ValidationError({"plan_start_date": "Plan start date cannot be before the pet's birth date."})
+        if self.pet_id and self.plan_start_date:
+            if self.plan_start_date < self.pet.birth_date:
+                raise ValidationError({"plan_start_date": "Plan start date cannot be before the pet's birth date."})
+            if self.plan_start_date > timezone.localdate() + timedelta(days=365*5):
+                raise ValidationError({"plan_start_date": "Plan start date cannot be more than 5 years in the future."})
+
+
 
     def __str__(self) -> str:
         return f"Plan for {self.pet.name} ({self.plan_start_date})"

@@ -21,10 +21,12 @@ class Pet(models.Model):
     notes = models.TextField(blank=True)
 
     def clean(self):
-        if self.birth_date > timezone.localdate():
+        if self.birth_date and self.birth_date > timezone.localdate():
             raise ValidationError({"birth_date": "Birth date cannot be in the future, please use a valid date."})
 
     def age_in_days(self) -> int:
+        if not self.birth_date:
+            return 0
         return max(0, (timezone.localdate() - self.birth_date).days)
 
     def age_in_weeks(self) -> int:
