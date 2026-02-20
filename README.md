@@ -14,7 +14,9 @@ This application was developed by a **Veterinary Technician** as a **mock model*
 - **Vaccine Database**: Store information about different vaccines, categories (core vs. optional), and applicable species.
 - **Recommendation Rules**: Define vaccination schedules based on age (weeks/months) and lifestyle requirements.
 - **Vaccination Plans**: Create personalized vaccination plans for each pet.
+- **Quick Plan Generator**: A unified tool to create a new pet and their full vaccination schedule in a single step, or quickly generate a plan for an existing pet.
 - **Dose Tracking**: Schedule and track individual doses, including boosters.
+- **Smart Filtering & Sorting**: Easily manage vaccination plans by status (Draft/Final) and sort by start date or creation date.
 - **Automated Data Loading**: Quick setup with comprehensive sample fixtures.
 - **Enhanced Admin Interface**: Manage all data easily through a customized Django admin.
 
