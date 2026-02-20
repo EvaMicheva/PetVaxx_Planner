@@ -23,26 +23,27 @@ class PlanListView(ListView):
 
     def get_queryset(self):
         qs = super().get_queryset().select_related("pet")
+
         status = self.request.GET.get("status")
         if status in {"draft", "final"}:
             qs = qs.filter(status=status)
-        order = self.request.GET.get("order")
-        if order == "start_asc":
-            qs = qs.order_by("plan_start_date", "pet__name")
-        elif order == "start_desc":
-            qs = qs.order_by("-plan_start_date", "pet__name")
-        elif order == "created_asc":
-            qs = qs.order_by("created_at")
-        else:
-            qs = qs.order_by("-created_at")
-        return qs
+
+        order_map = {
+            "start_asc": ("plan_start_date", "pet__name"),
+            "start_desc": ("-plan_start_date", "pet__name"),
+            "created_asc": ("created_at",),
+            "created_desc": ("-created_at",),
+        }
+        order = self.request.GET.get("order", "created_desc")
+        return qs.order_by(*order_map.get(order, ("-created_at",)))
 
     def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        ctx["current_status"] = self.request.GET.get("status", "")
-        ctx["current_order"] = self.request.GET.get("order", "-created")
-        ctx["total_count"] = Plan.objects.count()
-        return ctx
+        return super().get_context_data(**{
+            "current_status": self.request.GET.get("status", ""),
+            "current_order": self.request.GET.get("order", "created_desc"),
+            "total_count": Plan.objects.count(),
+            **kwargs
+        })
 
 class PlanDetailView(DetailView):
     model = Plan
@@ -60,7 +61,7 @@ class PlanCreateView(CreateView):
         if not plan.doses.exists():
             DoseGenerator(plan).generate()
         messages.success(self.request, "Vaccination plan created!")
-        return redirect(self.success_url)
+        return super().form_valid(form)
 
 class PlanUpdateView(UpdateView):
     model = Plan
