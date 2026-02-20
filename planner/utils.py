@@ -1,69 +1,91 @@
 from datetime import date, timedelta
 from calendar import monthrange
 
-def add_months(birthday, months):
+from vaccines.models import RecommendationRule, Species
+from .models import Dose
+
+
+def add_months(birthday: date, months: int) -> date:
     year = birthday.year + (birthday.month - 1 + months) // 12
     month = (birthday.month - 1 + months) % 12 + 1
     day = min(birthday.day, monthrange(year, month)[1])
     return date(year, month, day)
 
 
-def generate_doses_for_plan(plan):
-
+class DoseGenerator:
     """
-    Generates doses based on age and rules.
-    TODO: Add check for VaccinationRecord to handle 'Expired' status for vaccines like Lepto or FelV.
+    TODO: handle expired vaccines like Lepto or FelV.
+    TODO: handle vaccine history.
     """
 
-    from vaccines.models import RecommendationRule, Species
-    from .models import Dose
 
-    pet = plan.pet
+    def __init__(self, plan):
+        self.plan = plan
+        self.pet = plan.pet
+        self.species = self.get_species()
+        self.is_outdoor = self.pet.lifestyle in ("outdoor", "mixed")
 
-    species = Species.objects.filter(code=pet.species).first()
-    if not species:
-        return []
+    def generate(self):
+        if not self.species:
+            return []
 
-    rules = RecommendationRule.objects.filter(species=species)
+        rules = self.get_applicable_rules()
+        doses_to_create = []
 
-    is_outdoor = pet.lifestyle in ("outdoor", "mixed")
+        for rule in rules:
+            if not self.is_rule_applicable(rule):
+                continue
 
-    doses = []
+            due_date = self.calculate_due_date(rule)
 
-    for rule in rules:
+            if not self.is_valid_due_date(due_date):
+                continue
 
-        if rule.requires_outdoor and not is_outdoor:
-            continue
+            doses_to_create.append(self.build_dose(rule, due_date))
 
-        if rule.requires_travel and not pet.travels_abroad:
-            continue
+        return Dose.objects.bulk_create(doses_to_create)
 
-        due_date = None
+    def get_species(self):
+        return Species.objects.filter(code=self.pet.species).first()
 
-        if rule.due_age_weeks:
-            due_date = pet.birth_date + timedelta(weeks=rule.due_age_weeks)
+    def get_applicable_rules(self):
+        return RecommendationRule.objects.filter(species=self.species)
 
-        elif rule.due_age_months:
-            due_date = add_months(pet.birth_date, rule.due_age_months)
+    def is_rule_applicable(self, rule):
+        if rule.requires_outdoor and not self.is_outdoor:
+            return False
+        if rule.requires_travel and not self.pet.travels_abroad:
+            return False
+        return True
 
-        elif rule.repeat_every_months:
-            due_date = pet.birth_date
-            while due_date < plan.plan_start_date:
+    def calculate_due_date(self, rule):
+        due_date = self.calculate_initial_due_date(rule)
+
+        if rule.repeat_every_months:
+            due_date = due_date or self.pet.birth_date
+            while due_date < self.plan.plan_start_date:
                 due_date = add_months(due_date, rule.repeat_every_months)
 
-        if not due_date or due_date < plan.plan_start_date:
-            continue
+        return due_date
 
-        dose = Dose.objects.create(
-            plan=plan,
+    def calculate_initial_due_date(self, rule):
+        if rule.due_age_weeks:
+            return self.pet.birth_date + timedelta(weeks=rule.due_age_weeks)
+        if rule.due_age_months:
+            return add_months(self.pet.birth_date, rule.due_age_months)
+        return None
+
+    def is_valid_due_date(self, due_date):
+        return bool(due_date and due_date >= self.plan.plan_start_date)
+
+    def build_dose(self, rule, due_date):
+        return Dose(
+            plan=self.plan,
             vaccine=rule.vaccine,
             dose_number=rule.dose_number,
             due_date=due_date,
-            is_booster=True if rule.repeat_every_months or rule.dose_number >= 2 else False,
+            is_booster=bool(rule.repeat_every_months or rule.dose_number >= 2),
             notes=rule.notes,
         )
-        doses.append(dose)
-
-    return doses
 
 

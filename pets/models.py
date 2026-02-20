@@ -20,6 +20,9 @@ class Pet(models.Model):
     travels_abroad = models.BooleanField(default=False)
     notes = models.TextField(blank=True)
 
+    class Meta:
+        ordering = ['name']
+
     def clean(self):
         if self.birth_date and self.birth_date > timezone.localdate():
             raise ValidationError({"birth_date": "Birth date cannot be in the future, please use a valid date."})

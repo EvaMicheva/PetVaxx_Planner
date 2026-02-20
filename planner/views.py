@@ -7,7 +7,7 @@ from pets.models import Pet
 from vaccines.models import Vaccine
 from .models import Plan
 from .forms import PlanForm, QuickPlanForm
-from .utils import generate_doses_for_plan
+from .utils import DoseGenerator
 
 def home(request):
     return render(request, "home.html", {
@@ -58,7 +58,7 @@ class PlanCreateView(CreateView):
     def form_valid(self, form):
         plan = form.save()
         if not plan.doses.exists():
-            generate_doses_for_plan(plan)
+            DoseGenerator(plan).generate()
         messages.success(self.request, "Vaccination plan created!")
         return redirect(self.success_url)
 
@@ -105,7 +105,7 @@ def quick_plan_create(request):
                 status="draft",
             )
 
-            generate_doses_for_plan(plan)
+            DoseGenerator(plan).generate()
             messages.success(request, f"Plan generated for {pet.name} with all recommended doses!")
             return redirect(reverse("planner:detail", kwargs={"pk": plan.pk}))
     else:
