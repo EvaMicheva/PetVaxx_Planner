@@ -93,8 +93,8 @@ class QuickPlanForm(forms.Form):
     )
 
     def clean_birth_date(self):
-        b = self.cleaned_data["birth_date"]
-        if b > timezone.localdate():
+        b = self.cleaned_data.get("birth_date")
+        if b and b > timezone.localdate():
             raise forms.ValidationError("Birth date cannot be in the future.")
         return b
 

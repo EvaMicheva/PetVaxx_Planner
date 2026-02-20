@@ -15,32 +15,57 @@
                 <form method="post" novalidate>
                     {% csrf_token %}
 
+                    <div class="mb-4 p-3 border rounded bg-light shadow-sm">
+                        <label for="{{ form.pet.id_for_label }}" class="form-label fw-bold text-primary">
+                            <i class="fas fa-search me-1"></i> Select an Existing Pet
+                        </label>
+                        <select name="{{ form.pet.name }}" class="form-select {% if form.pet.errors %}is-invalid{% endif %}" id="{{ form.pet.id_for_label }}">
+                            {% for value, text in form.pet.field.choices %}
+                                <option value="{{ value }}" {% if form.pet.value == value %}selected{% endif %}>{{ text }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text small">Pick a pet already in your system to skip the details below.</div>
+                        {% if form.pet.errors %}
+                            <div class="invalid-feedback d-block">{{ form.pet.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="text-center my-4 position-relative">
+                        <hr>
+                        <span class="position-absolute top-50 start-50 translate-middle px-3 bg-white fw-bold text-muted small">
+                            OR CREATE A NEW PET
+                        </span>
+                    </div>
+
+                    <!-- Path B: New Pet Details -->
                     {% for field in form %}
-                        <div class="mb-3">
-                            <label for="{{ field.id_for_label }}" class="form-label fw-bold">{{ field.label }}</label>
-                            {% if field.field.widget.input_type == 'date' %}
-                                <input type="date" name="{{ field.name }}" class="form-control {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|date:'Y-m-d'|default:field.value|default:'' }}">
-                            {% elif field.field.widget.input_type == 'checkbox' %}
-                                <div class="form-check form-switch">
-                                    <input type="checkbox" name="{{ field.name }}" class="form-check-input" id="{{ field.id_for_label }}" {% if field.value %}checked{% endif %}>
-                                    <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                </div>
-                            {% elif field.field.choices %}
-                                <select name="{{ field.name }}" class="form-select {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}">
-                                    {% for value, text in field.field.choices %}
-                                        <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ text }}</option>
-                                    {% endfor %}
-                                </select>
-                            {% else %}
-                                <input type="text" name="{{ field.name }}" class="form-control {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}">
-                            {% endif %}
-                            {% if field.help_text %}
-                                <div class="form-text small text-muted">{{ field.help_text }}</div>
-                            {% endif %}
-                            {% if field.errors %}
-                                <div class="invalid-feedback d-block">{{ field.errors|striptags }}</div>
-                            {% endif %}
-                        </div>
+                        {% if field.name != 'pet' %}
+                            <div class="mb-3 new-pet-details">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-bold">{{ field.label }}</label>
+                                {% if field.field.widget.input_type == 'date' %}
+                                    <input type="date" name="{{ field.name }}" class="form-control {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|date:'Y-m-d'|default:field.value|default:'' }}">
+                                {% elif field.field.widget.input_type == 'checkbox' %}
+                                    <div class="form-check form-switch">
+                                        <input type="checkbox" name="{{ field.name }}" class="form-check-input" id="{{ field.id_for_label }}" {% if field.value %}checked{% endif %}>
+                                        <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    </div>
+                                {% elif field.field.choices %}
+                                    <select name="{{ field.name }}" class="form-select {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}">
+                                        {% for value, text in field.field.choices %}
+                                            <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ text }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}
+                                    <input type="text" name="{{ field.name }}" class="form-control {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}">
+                                {% endif %}
+                                {% if field.help_text %}
+                                    <div class="form-text small text-muted">{{ field.help_text }}</div>
+                                {% endif %}
+                                {% if field.errors %}
+                                    <div class="invalid-feedback d-block">{{ field.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     {% endfor %}
 
                     <div class="d-grid gap-2">
@@ -68,6 +93,23 @@
     // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
       'use strict'
+      
+      const petSelect = document.getElementById('{{ form.pet.id_for_label }}');
+      const newPetFields = document.querySelectorAll('.new-pet-details');
+      
+      function toggleNewPetFields() {
+          const isExistingPet = petSelect.value !== "";
+          newPetFields.forEach(el => {
+              el.style.opacity = isExistingPet ? "0.5" : "1";
+              el.style.pointerEvents = isExistingPet ? "none" : "auto";
+          });
+      }
+      
+      if (petSelect) {
+          petSelect.addEventListener('change', toggleNewPetFields);
+          toggleNewPetFields(); // Initialize on load
+      }
+
       var forms = document.querySelectorAll('.needs-validation')
       Array.prototype.slice.call(forms)
         .forEach(function (form) {
