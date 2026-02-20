@@ -86,13 +86,19 @@ def quick_plan_create(request):
         form = QuickPlanForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            pet = Pet.objects.create(
-                name=cd["name"],
-                species=cd["species"],
-                birth_date=cd["birth_date"],
-                lifestyle=cd["lifestyle"],
-                travels_abroad=cd["travels_abroad"],
+
+            if cd.get("pet"):
+                pet = cd["pet"]
+
+            else:
+                pet = Pet.objects.create(
+                    name=cd["name"],
+                    species=cd["species"],
+                    birth_date=cd["birth_date"],
+                    lifestyle=cd["lifestyle"],
+                    travels_abroad=cd["travels_abroad"],
             )
+
             plan = Plan.objects.create(
                 pet=pet,
                 plan_start_date=timezone.localdate(),

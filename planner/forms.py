@@ -44,6 +44,13 @@ class PlanForm(forms.ModelForm):
 
 
 class QuickPlanForm(forms.Form):
+
+    pet = forms.ModelChoiceField(
+        queryset=Pet.objects.all(),
+        empty_label="Select your pet",
+        required=False
+    )
+
     name = forms.CharField(
         max_length=80,
         label="Pet Name",
@@ -53,11 +60,13 @@ class QuickPlanForm(forms.Form):
             "max_length": "Name cannot exceed 80 characters.",
         },
         help_text="Name will be used when saving the pet and plan.",
+        required=False
     )
     species = forms.ChoiceField(
         choices=Pet._meta.get_field("species").choices,
         label="Species",
         error_messages={"required": "Please select a species."},
+        required=False
     )
     birth_date = forms.DateField(
         label="Birth Date",
@@ -67,12 +76,14 @@ class QuickPlanForm(forms.Form):
             "invalid": "Please enter a valid date.",
         },
         help_text="Used to determine correct vaccine timing.",
+        required=False
     )
     lifestyle = forms.ChoiceField(
         choices=Pet._meta.get_field("lifestyle").choices,
         initial=Lifestyle.MIXED,
         label="Lifestyle",
         help_text="Helps choose optional vaccine rules.",
+        required=False
     )
     travels_abroad = forms.BooleanField(
         required=False,
@@ -86,3 +97,21 @@ class QuickPlanForm(forms.Form):
         if b > timezone.localdate():
             raise forms.ValidationError("Birth date cannot be in the future.")
         return b
+
+    def clean(self):
+        cleaned = super().clean()
+        pet = cleaned.get("pet")
+
+        if pet:
+            return cleaned
+
+        required_fields = ["name", "species", "birth_date"]
+        missing = [f for f in required_fields if not cleaned.get(f)]
+
+        if missing:
+            for f in missing:
+                self.add_error(f, "This field is required when no pet is selected from the list.")
+
+            self.add_error(None, "Select an existing pet OR fill in all new pet details.")
+
+        return cleaned
