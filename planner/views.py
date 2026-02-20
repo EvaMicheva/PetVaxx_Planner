@@ -98,7 +98,7 @@ def quick_plan_create(request):
                 plan_start_date=timezone.localdate(),
                 status="draft",
             )
-            # Generate Doses
+
             generate_doses_for_plan(plan)
             messages.success(request, f"Plan generated for {pet.name} with all recommended doses!")
             return redirect(reverse("planner:detail", kwargs={"pk": plan.pk}))

@@ -1,5 +1,6 @@
 from django import forms
 from django.utils import timezone
+from datetime import timedelta
 
 from .models import Plan
 from pets.models import Pet
@@ -32,13 +33,12 @@ class PlanForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Disable changing the pet on updates to avoid accidental reassignment
         if self.instance and self.instance.pk:
             self.fields["pet"].disabled = True
 
     def clean_plan_start_date(self):
         date = self.cleaned_data.get("plan_start_date")
-        if date and date > timezone.localdate() + timezone.timedelta(days=365*5):
+        if date is not None and date > timezone.localdate() + timedelta(days=365*5):
             raise forms.ValidationError("Start date seems too far in the future. Please pick a nearer date.")
         return date
 
@@ -47,7 +47,7 @@ class QuickPlanForm(forms.Form):
     name = forms.CharField(
         max_length=80,
         label="Pet Name",
-        widget=forms.TextInput(attrs={"placeholder": "e.g. Sammy"}),
+        widget=forms.TextInput(attrs={"placeholder": "e.g. Buddy"}),
         error_messages={
             "required": "Please enter the pet's name.",
             "max_length": "Name cannot exceed 80 characters.",
