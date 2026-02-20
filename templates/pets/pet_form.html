@@ -30,7 +30,7 @@
                             <div class="{% if field.errors %}is-invalid{% endif %}">
                                 {% if field.field.widget.input_type == "checkbox" %}
                                     <div class="form-check form-switch p-2 ps-5 border rounded bg-light bg-opacity-50">
-                                        <input type="checkbox" name="{{ field.name }}" class="form-check-input" id="{{ field.id_for_label }}" {% if field.value %}checked{% endif %}>
+                                        <input type="checkbox" name="{{ field.name }}" class="form-check-input" id="{{ field.id_for_label }}" {% if field.value %}checked{% endif %} {% if field.field.disabled %}disabled{% endif %}>
                                         <label class="form-check-label" for="{{ field.id_for_label }}">
                                             {% if field.name == "travels_abroad" %}
                                                 <i class="fas fa-plane-departure me-1 text-primary"></i> Travels Abroad?
@@ -40,17 +40,17 @@
                                         </label>
                                     </div>
                                 {% elif field.name == "birth_date" %}
-                                    <input type="date" name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|date:'Y-m-d'|default:field.value|default:'' }}">
+                                    <input type="date" name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|date:'Y-m-d'|default:field.value|default:'' }}" {% if field.field.disabled %}disabled{% endif %}>
                                 {% elif field.name == "notes" %}
-                                    <textarea name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" rows="3" placeholder="Any specific medical history or allergies?">{{ field.value|default:"" }}</textarea>
+                                    <textarea name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" rows="3" placeholder="Any specific medical history or allergies?" {% if field.field.disabled %}disabled{% endif %}>{{ field.value|default:"" }}</textarea>
                                 {% elif field.field.choices %}
-                                    <select name="{{ field.name }}" class="form-select shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}">
+                                    <select name="{{ field.name }}" class="form-select shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" {% if field.field.disabled %}disabled{% endif %}>
                                         {% for value, text in field.field.choices %}
                                             <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ text }}</option>
                                         {% endfor %}
                                     </select>
                                 {% else %}
-                                    <input type="{{ field.field.widget.input_type|default:'text' }}" name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}" placeholder="Enter {{ field.label|lower }}">
+                                    <input type="{{ field.field.widget.input_type|default:'text' }}" name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}" placeholder="Enter {{ field.label|lower }}" {% if field.field.disabled %}disabled{% endif %}>
                                 {% endif %}
                             </div>
                             {% if field.errors %}

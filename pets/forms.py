@@ -15,21 +15,15 @@ class PetForm(forms.ModelForm):
 
     class Meta:
         model = Pet
-        fields = [
-            "name",
-            "species",
-            "birth_date",
-            "lifestyle",
-            "travels_abroad",
-            "notes",
-        ]
+        fields = '__all__'
+
         labels = {
             "name": "Pet Name",
             "species": "Species",
             "birth_date": "Birth Date",
             "lifestyle": "Lifestyle",
             "travels_abroad": "Travels Abroad?",
-            "notes": "Notes",
+            "notes": " Important Notes",
         }
         help_texts = {
             "name": "Enter your pet's name.",
@@ -57,20 +51,29 @@ class PetForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         birth = None
-        if self.is_bound:
-            date = self.data.get(self.add_prefix("birth_date"))
-            try:
-                birth = timezone.datetime.strptime(date, "%Y-%m-%d").date() if date else None
-            except Exception:
-                birth = None
-        elif self.instance and self.instance.pk:
+
+        if self.instance and self.instance.pk:
             birth = self.instance.birth_date
+
         if birth:
-            self.fields["age_in_weeks"].initial = max(0, (timezone.localdate() - birth).days // 7)
+            self.fields["age_in_weeks"].initial = max(
+                0,
+                (timezone.localdate() - birth).days // 7
+            )
 
     def clean_birth_date(self):
         birth_date = self.cleaned_data.get("birth_date")
+
         if birth_date is not None and birth_date > timezone.localdate():
-            raise forms.ValidationError("Birth date cannot be in the future.")
+            raise forms.ValidationError(
+                "Birth date cannot be in the future."
+            )
+        if birth_date:
+            self.cleaned_data["age_in_weeks"] = max(
+                0,
+                (timezone.localdate() - birth_date).days // 7
+            )
+
         return birth_date
