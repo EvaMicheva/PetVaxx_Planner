@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
 from django.contrib.auth.models import Group
+from .models import Profile
 
 User = get_user_model()
 
@@ -34,7 +35,6 @@ class UserRegistrationForm(UserCreationForm):
                 group, _ = Group.objects.get_or_create(name='Regular Users')
             user.groups.add(group)
 
-            from .models import Profile
             Profile.objects.get_or_create(
                 user=user,
                 defaults={
@@ -44,3 +44,14 @@ class UserRegistrationForm(UserCreationForm):
                 }
             )
         return user
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['first_name', 'last_name', 'phone']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+        }

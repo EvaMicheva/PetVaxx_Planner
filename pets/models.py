@@ -6,6 +6,17 @@ from django.utils import timezone
 from .pets_choices import PetSpecies, Lifestyle
 
 
+class MedicalCondition(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name_plural = "Medical Conditions"
+
+    def __str__(self):
+        return self.name
+
+
 class Pet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='pets', null=True, blank=True)
     name = models.CharField(max_length=80)
@@ -18,6 +29,7 @@ class Pet(models.Model):
         default=Lifestyle.MIXED,
     )
     travels_abroad = models.BooleanField(default=False)
+    medical_conditions = models.ManyToManyField(MedicalCondition, related_name='pets', blank=True)
     notes = models.TextField(blank=True)
 
     class Meta:

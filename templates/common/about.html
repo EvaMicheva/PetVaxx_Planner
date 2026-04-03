@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - VetVax Planner{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 mb-4 overflow-hidden">
+            <div class="bg-primary text-white p-5 text-center">
+                <h1 class="display-5 mb-3">About VetVax Planner</h1>
+                <p class="lead mb-0">Bridging the gap between veterinary medicine and data-driven pet care.</p>
+            </div>
+            <div class="card-body p-5">
+                <div class="mb-5">
+                    <h3 class="border-bottom pb-2 mb-4">Our Mission</h3>
+                    <p class="fs-5 text-muted">To provide pet owners and veterinarians with a reliable, accurate, and easy-to-use platform for managing vaccination schedules, ensuring every pet receives the core protection they need to live a healthy life.</p>
+                </div>
+
+                <div class="row g-4 mb-5">
+                    <div class="col-md-6">
+                        <div class="p-4 border rounded-4 h-100 bg-light">
+                            <h5 class="fw-bold mb-3"><i class="fas fa-stethoscope text-primary me-2"></i>Expert Foundations</h5>
+                            <p class="small mb-0">Our logic is built upon the 2026 Stiko Vet requirements from Germany, reflecting modern veterinary standards and protocols for companion animals.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-4 border rounded-4 h-100 bg-light">
+                            <h5 class="fw-bold mb-3"><i class="fas fa-shield-cat text-primary me-2"></i>Personalized Care</h5>
+                            <p class="small mb-0">Every pet is unique. Our planner takes into account species, lifestyle, and travel history to recommend the optimal vaccination series.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <h3 class="border-bottom pb-2 mb-4">Core Principles</h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item border-0 px-0 d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                            <div>
+                                <strong>Proactive Prevention:</strong> Anticipating medical needs before they become emergencies.
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 px-0 d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                            <div>
+                                <strong>Data Transparency:</strong> Providing owners with clear visibility into their pets' medical timelines.
+                            </div>
+                        </li>
+                        <li class="list-group-item border-0 px-0 d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success mt-1 me-3"></i>
+                            <div>
+                                <strong>Professional Collaboration:</strong> Supporting the vital relationship between pets, owners, and their veterinarians.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="text-center mt-5">
+                    <p class="text-muted small italic">VetVax Planner is an educational project developed for Django demonstration purposes.</p>
+                    <a href="{% url 'common:contact' %}" class="btn btn-primary rounded-pill px-5">Get In Touch</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

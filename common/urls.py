@@ -1,0 +1,10 @@
+from django.urls import path
+from . import views
+
+app_name = 'common'
+
+urlpatterns = [
+    path('contact/', views.ContactView.as_view(), name='contact'),
+    path('contact/success/', views.ContactSuccessView.as_view(), name='contact_success'),
+    path('about/', views.AboutView.as_view(), name='about'),
+]

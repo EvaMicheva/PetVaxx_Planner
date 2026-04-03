@@ -38,6 +38,7 @@ PROJECT_APPS = [
     'pets',
     'vaccines',
     'planner',
+    'common',
 ]
 
 INSTALLED_APPS = [

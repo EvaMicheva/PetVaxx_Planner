@@ -23,6 +23,7 @@ urlpatterns = [
     path("", include("planner.urls")),
     path("pets/", include("pets.urls")),
     path("vaccines/", include("vaccines.urls")),
+    path("common/", include("common.urls")),
 ]
 
 # Custom error handlers

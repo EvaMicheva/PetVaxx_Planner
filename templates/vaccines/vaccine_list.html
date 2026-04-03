@@ -3,8 +3,30 @@
 {% block title %}Vaccines List - VetVax Planner{% endblock %}
 
 {% block content %}
-<div class="mb-4">
-    <h2>Available Vaccines</h2>
+<div class="card shadow-sm border-0 mb-4 p-4">
+    <div class="row align-items-center">
+        <div class="col-md-4">
+            <h2 class="mb-0">Available Vaccines</h2>
+        </div>
+        <div class="col-md-8">
+            <form method="get" class="row g-2 justify-content-md-end">
+                <div class="col-sm-5">
+                    {{ form.search_query }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form.category }}
+                </div>
+                <div class="col-sm-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary rounded-pill flex-grow-1 px-4">
+                        <i class="fas fa-search me-1"></i> Search
+                    </button>
+                    <a href="{% url 'vaccines:list' %}" class="btn btn-outline-secondary rounded-pill px-3">
+                        <i class="fas fa-rotate-left"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <div class="card shadow-sm border-0">
