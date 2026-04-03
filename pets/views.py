@@ -9,7 +9,10 @@ from .forms import PetForm
 
 @login_required
 def pet_list(request):
-    pets = Pet.objects.filter(user=request.user)
+    if request.user.groups.filter(name='Vet Administrators').exists() or request.user.is_superuser:
+        pets = Pet.objects.all()
+    else:
+        pets = Pet.objects.filter(user=request.user)
     return render(request, "pets/pet_list.html", {"pets": pets})
 
 class PetDetailView(LoginRequiredMixin, DetailView):
@@ -18,6 +21,8 @@ class PetDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "pet"
 
     def get_queryset(self):
+        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+            return super().get_queryset()
         return super().get_queryset().filter(user=self.request.user)
 
 class PetCreateView(LoginRequiredMixin, CreateView):
@@ -38,6 +43,8 @@ class PetUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("pets:list")
 
     def get_queryset(self):
+        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+            return super().get_queryset()
         return super().get_queryset().filter(user=self.request.user)
 
     def form_valid(self, form):
@@ -50,6 +57,8 @@ class PetDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("pets:list")
 
     def get_queryset(self):
+        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+            return super().get_queryset()
         return super().get_queryset().filter(user=self.request.user)
 
     def delete(self, request, *args, **kwargs):
