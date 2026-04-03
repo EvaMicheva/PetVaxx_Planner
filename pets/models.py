@@ -1,5 +1,4 @@
-from django.db import models
-
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
@@ -8,6 +7,7 @@ from .pets_choices import PetSpecies, Lifestyle
 
 
 class Pet(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='pets', null=True, blank=True)
     name = models.CharField(max_length=80)
     species = models.CharField(max_length=10, choices=PetSpecies)
     birth_date = models.DateField()
