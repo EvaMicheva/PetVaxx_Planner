@@ -7,6 +7,16 @@ from .forms import UserRegistrationForm, ProfileUpdateForm
 from .models import Profile
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+import asyncio
+import threading
+
+def run_async(coro):
+    loop = asyncio.new_event_loop()
+    threading.Thread(target=loop.run_until_complete, args=(coro,)).start()
+
+async def send_welcome_task(user_email):
+    await asyncio.sleep(2)
+    print(f"DEBUG: Asynchronous 'Welcome' email successfully sent to {user_email}")
 
 class UserRegistrationView(CreateView):
     template_name = 'accounts/register.html'
@@ -16,6 +26,8 @@ class UserRegistrationView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+        if user.email:
+            run_async(send_welcome_task(user.email))
         return redirect(self.success_url)
 
 class UserLoginView(LoginView):

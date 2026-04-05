@@ -29,3 +29,11 @@ class VaccineDetailView(DetailView):
     model = Vaccine
     template_name = "vaccines/vaccine_detail.html"
     context_object_name = "vaccine"
+
+from rest_framework import generics, permissions
+from .serializers import VaccineSerializer
+
+class VaccineListAPI(generics.ListAPIView):
+    queryset = Vaccine.objects.all()
+    serializer_class = VaccineSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]

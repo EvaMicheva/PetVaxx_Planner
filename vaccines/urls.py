@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import vaccine_list, VaccineDetailView
+from . import views
 
 app_name = "vaccines"
 
 urlpatterns = [
-    path("", vaccine_list, name="list"),
-    path("<int:pk>/", VaccineDetailView.as_view(), name="detail"),
+    path("", views.vaccine_list, name="list"),
+    path("<int:pk>/", views.VaccineDetailView.as_view(), name="detail"),
+    path("api/list/", views.VaccineListAPI.as_view(), name="api_list"),
 ]

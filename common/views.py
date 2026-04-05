@@ -9,8 +9,6 @@ class ContactView(FormView):
     success_url = reverse_lazy('common:contact_success')
 
     def form_valid(self, form):
-        # In a real app, you might send an email here.
-        # For now, just proceed to success page.
         return super().form_valid(form)
 
 class ContactSuccessView(TemplateView):
