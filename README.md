@@ -26,7 +26,7 @@ This application was developed by a **Veterinary Technician** as a **mock model*
 - PostgreSQL
 - `make` (optional, for automation)
 
-## Installation
+## Installation & Setup
 
 1. **Clone the repository**:
    ```bash
@@ -45,45 +45,58 @@ This application was developed by a **Veterinary Technician** as a **mock model*
    pip install -r requirements.txt
    ```
 
-## Configuration
+4. **Environment Configuration**:
+   The application requires several environment variables for security and database settings.
+   - Copy the example `.env` file:
+     ```bash
+     cp .env.example .env
+     ```
+   - The default configuration uses **SQLite** for the easiest local setup ("without modifications"). If you prefer a different database (e.g., PostgreSQL), update the `DATABASES` dictionary in `VetVax_Planner/settings.py`.
 
-1. **Copy the example environment variables file**:
-   ```bash
-   cp .env.example .env
-   ```
-
-2. **Configure variables in `.env`**:
-   - `SECRET_KEY`: Django secret key.
-   - `DEBUG`: Set to `True` for development, `False` for production.
-   - **PostgreSQL database details**: Update `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, and `DB_PORT` to match your local setup.
-
-## Database & Data Loading
-
-1. **Run migrations**:
+5. **Run Migrations**:
    ```bash
    python manage.py migrate
    ```
 
-2. **Load sample data (using Makefile)**:
+6. **Load Sample Data**:
    The project includes a `Makefile` to quickly populate the database with species, vaccines, recommendation rules, pets, and sample vaccination plans.
    
    ```bash
    make load-all
    ```
    
-   Alternatively, you can load fixtures individually:
-   - `make load-vaccines`: Loads vaccines and species-specific rules.
-   - `make load-pets`: Loads example pets.
-   - `make load-planner`: Loads sample vaccination plans and doses.
+   Alternatively, load fixtures individually:
+   ```bash
+   python manage.py loaddata vaccines/fixtures/petvaxx_seed_data_fixture.json
+   python manage.py loaddata pets/fixtures/pets_data.json
+   python manage.py loaddata planner/fixtures/plans_and_doses.json
+   ```
 
-## Running the Application
+7. **Create a Superuser** (to access `/admin/`):
+   ```bash
+   python manage.py createsuperuser
+   ```
 
-```bash
-python manage.py runserver
-```
+8. **Running the Application**:
+   ```bash
+   python manage.py runserver
+   ```
+   The application will be accessible at `http://127.0.0.1:8000/`.
 
-The application will be accessible at `http://127.0.0.1:8000/`.
-Access the admin interface at `http://127.0.0.1:8000/admin/` (requires creating a superuser via `python manage.py createsuperuser`).
+## Project Requirements Checklist
+
+- **Public & Private Sections**: Homepage and About are public; Pets and Plans require authentication.
+- **User Extension**: Custom `User` model with `is_vet` boolean in `accounts/models.py`.
+- **User Groups**: "Vet Administrators" and "Regular Users" created via migrations and assigned on registration.
+- **5 Django Apps**: `accounts`, `pets`, `vaccines`, `planner`, `common`.
+- **Database Architecture**: 5+ models, M2M (species/vaccines, pets/medical conditions), One-to-One (User/Profile), FK (Pet/User, Plan/Pet, Dose/Plan).
+- **Forms & Validations**: 7+ forms with labels, placeholders, help texts, and custom clean methods.
+- **Views**: 90% Class-Based Views (CBVs) with proper form handling and redirects.
+- **Asynchronous Processing**: Simulated welcome email task using Python's `asyncio` in `accounts/views.py`.
+- **API**: RESTful endpoint for vaccines using Django REST Framework.
+- **Templates**: 15+ templates using inheritance, partials (`_navbar.html`, `_footer.html`), and custom filters (`planner_extras.py`).
+- **Security**: Environment variables used for secrets; CSRF protection; Delete confirmation steps.
+- **Tests**: 15+ automated tests in `tests_comprehensive.py`.
 
 ## Project Structure
 
@@ -91,6 +104,15 @@ Access the admin interface at `http://127.0.0.1:8000/admin/` (requires creating 
 - `vaccines/`: Vaccine definitions and recommendation logic.
 - `planner/`: Management of vaccination plans and individual doses.
 - `VetVax_Planner/`: Core Django project settings and configuration.
+
+## 🚀 Project Highlights
+- **5+ Django Apps:** `accounts`, `pets`, `vaccines`, `planner`, `common`.
+- **Advanced Permissions:** Distinct roles for "Vet Administrators" (global view/manage) and "Regular Users" (personal data only).
+- **RESTful API:** Developed with Django REST Framework, providing vaccine data endpoints.
+- **Asynchronous Processing:** Built-in simulated email system using Python's `asyncio` on user registration.
+- **Robust Validation:** Custom clean methods in 7+ forms (e.g., birth date validation, email domain checks).
+- **Medical Tracking:** Supports Many-to-Many relationships for species-specific vaccines and pet medical conditions.
+- **Comprehensive Testing:** Over 15 automated tests covering core business logic and user scenarios.
 
 ## 🚀 Future Roadmap
 - **Medical History & Vaccine Records**: Implement a `VaccinationRecord` model to track actual shot dates and history.

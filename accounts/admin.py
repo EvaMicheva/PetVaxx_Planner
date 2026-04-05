@@ -4,7 +4,13 @@ from .models import User, Profile
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff')
+    list_display = ('username', 'email', 'is_vet', 'is_staff')
+    fieldsets = UserAdmin.fieldsets + (
+        ('Veterinary Info', {'fields': ('is_vet',)}),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ('Veterinary Info', {'fields': ('is_vet',)}),
+    )
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
