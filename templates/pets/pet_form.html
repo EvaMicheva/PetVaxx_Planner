@@ -28,22 +28,32 @@
                                 {{ field.label }}
                             </label>
                             <div class="{% if field.errors %}is-invalid{% endif %}">
-                                {% if field.field.widget.input_type == "checkbox" %}
+                                {% if field.name == 'travels_abroad' %}
                                     <div class="form-check form-switch p-2 ps-5 border rounded bg-light bg-opacity-50">
                                         <input type="checkbox" name="{{ field.name }}" class="form-check-input" id="{{ field.id_for_label }}" {% if field.value %}checked{% endif %} {% if field.field.disabled %}disabled{% endif %}>
                                         <label class="form-check-label" for="{{ field.id_for_label }}">
-                                            {% if field.name == "travels_abroad" %}
-                                                <i class="fas fa-plane-departure me-1 text-primary"></i> Travels Abroad?
-                                            {% else %}
-                                                {{ field.help_text|default:field.label }}
-                                            {% endif %}
+                                            <i class="fas fa-plane-departure me-1 text-primary"></i> Travels Abroad?
                                         </label>
                                     </div>
                                 {% elif field.name == "birth_date" %}
                                     <input type="date" name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|date:'Y-m-d'|default:field.value|default:'' }}" {% if field.field.disabled %}disabled{% endif %}>
                                 {% elif field.name == "notes" %}
                                     <textarea name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" rows="3" placeholder="Any specific medical history or allergies?" {% if field.field.disabled %}disabled{% endif %}>{{ field.value|default:"" }}</textarea>
-                                {% elif field.field.choices or field.name == 'user' %}
+                                {% elif field.name == 'medical_conditions' %}
+                                    <div class="border rounded p-3 bg-white shadow-sm overflow-auto" style="max-height: 200px;">
+                                        {% for pk, label in field.field.choices %}
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" name="{{ field.name }}" value="{{ pk }}" id="{{ field.id_for_label }}_{{ forloop.index }}" 
+                                                    {% if field.value %}
+                                                        {% if pk in field.value or pk|stringformat:"s" in field.value %}checked{% endif %}
+                                                    {% endif %}>
+                                                <label class="form-check-label small" for="{{ field.id_for_label }}_{{ forloop.index }}">
+                                                    {{ label }}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% elif field.name == 'user' or field.field.choices %}
                                     <select name="{{ field.name }}" class="form-select shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" {% if field.field.disabled %}disabled{% endif %}>
                                         {% if field.field.choices %}
                                             {% for value, text in field.field.choices %}
@@ -51,7 +61,12 @@
                                             {% endfor %}
                                         {% else %}
                                             {% for obj in field.field.queryset %}
-                                                <option value="{{ obj.pk }}" {% if field.value == obj.pk|stringformat:"s" or field.value == obj.pk %}selected{% endif %}>{{ obj }}</option>
+                                                <option value="{{ obj.pk }}" 
+                                                    {% if field.value %}
+                                                        {% if obj.pk == field.value or obj.pk|stringformat:"s" == field.value %}selected{% endif %}
+                                                    {% endif %}>
+                                                    {{ obj }}
+                                                </option>
                                             {% endfor %}
                                         {% endif %}
                                     </select>

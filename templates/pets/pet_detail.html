@@ -18,6 +18,9 @@
                 <p class="mb-2"><strong>Born:</strong> {{ pet.birth_date|date:"F d, Y" }}</p>
                 <p class="mb-2"><strong>Age:</strong> {{ pet.age_in_weeks }} weeks</p>
                 <p class="mb-2 text-capitalize"><strong>Lifestyle:</strong> {{ pet.lifestyle }}</p>
+                {% if user.is_vet or user.is_superuser or user.groups.all.0.name == 'Vet Administrators' %}
+                <p class="mb-2"><strong>Owner:</strong> <span class="badge bg-primary">{{ pet.user.username|default:"System" }}</span></p>
+                {% endif %}
                 <p class="mb-3">
                     <strong>Travels Abroad:</strong> 
                     {% if pet.travels_abroad %}

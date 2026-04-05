@@ -1,0 +1,74 @@
+[
+  {
+    "model": "pets.medicalcondition",
+    "pk": 100,
+    "fields": {
+      "name": "No known medical conditions",
+      "description": "Pet has no recorded medical conditions."
+    }
+  },
+  {
+    "model": "pets.medicalcondition",
+    "pk": 1,
+    "fields": {
+      "name": "Diabetes Mellitus",
+      "description": "Chronic condition affecting blood sugar regulation."
+    }
+  },
+  {
+    "model": "pets.medicalcondition",
+    "pk": 2,
+    "fields": {
+      "name": "Hypothyroidism",
+      "description": "Underactive thyroid gland."
+    }
+  },
+  {
+    "model": "pets.medicalcondition",
+    "pk": 3,
+    "fields": {
+      "name": "Chronic Kidney Disease",
+      "description": "Gradual loss of kidney function over time."
+    }
+  },
+  {
+    "model": "pets.medicalcondition",
+    "pk": 4,
+    "fields": {
+      "name": "Food Allergy",
+      "description": "Adverse immune response to specific dietary components."
+    }
+  },
+  {
+    "model": "pets.medicalcondition",
+    "pk": 5,
+    "fields": {
+      "name": "Atopy (Environmental Allergy)",
+      "description": "Allergic reaction to environmental allergens like pollen or dust mites."
+    }
+  },
+  {
+    "model": "pets.medicalcondition",
+    "pk": 6,
+    "fields": {
+      "name": "Arthritis",
+      "description": "Inflammation of one or more joints, causing pain and stiffness."
+    }
+  },
+  {
+    "model": "pets.medicalcondition",
+    "pk": 7,
+    "fields": {
+      "name": "FIV Positive",
+      "description": "Feline Immunodeficiency Virus; affects the immune system."
+    }
+  },
+  {
+    "model": "pets.medicalcondition",
+    "pk": 8,
+    "fields": {
+      "name": "Heart Murmur",
+      "description": "Abnormal sound during a heartbeat cycle."
+    }
+  }
+]

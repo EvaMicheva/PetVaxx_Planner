@@ -36,6 +36,7 @@ class PetForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"placeholder": "e.g. Buddy"}),
             "birth_date": forms.DateInput(attrs={"type": "date"}),
+            "medical_conditions": forms.CheckboxSelectMultiple(),
             "notes": forms.Textarea(attrs={"rows": 3, "placeholder": "Any special considerations?"}),
         }
         error_messages = {
@@ -52,6 +53,7 @@ class PetForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+        self.fields['medical_conditions'].required = False
 
         if user and (user.is_vet or user.groups.filter(name='Vet Administrators').exists() or user.is_superuser):
             from django.contrib.auth import get_user_model
