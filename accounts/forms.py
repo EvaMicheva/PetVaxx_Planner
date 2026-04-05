@@ -24,12 +24,15 @@ class UserRegistrationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        is_vet = self.cleaned_data.get('is_vet', False)
+        user.is_vet = is_vet
+        
         if commit:
             user.save()
             if hasattr(self, 'save_m2m'):
                 self.save_m2m()
             
-            if self.cleaned_data.get('is_vet'):
+            if is_vet:
                 group, _ = Group.objects.get_or_create(name='Vet Administrators')
             else:
                 group, _ = Group.objects.get_or_create(name='Regular Users')
