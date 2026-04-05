@@ -51,6 +51,13 @@ class QuickPlanForm(forms.Form):
         required=False
     )
 
+    owner = forms.ModelChoiceField(
+        queryset=Pet._meta.get_field('user').remote_field.model.objects.all(),
+        required=False,
+        label="Pet Owner",
+        help_text="Select an owner for the new pet (Vets only)."
+    )
+
     name = forms.CharField(
         max_length=80,
         label="Pet Name",
@@ -91,6 +98,18 @@ class QuickPlanForm(forms.Form):
         label="Travels Abroad?",
         help_text="Enable if the pet travels internationally.",
     )
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            if not (user.is_vet or user.groups.filter(name='Vet Administrators').exists() or user.is_superuser):
+                self.fields['pet'].queryset = Pet.objects.filter(user=user)
+                del self.fields['owner']
+            else:
+                self.fields['owner'].initial = user
+                # Ensure all pets are visible for vets (default)
+                self.fields['pet'].queryset = Pet.objects.all()
 
     def clean_birth_date(self):
         b = self.cleaned_data.get("birth_date")

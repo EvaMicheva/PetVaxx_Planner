@@ -49,11 +49,17 @@
                                         <input type="checkbox" name="{{ field.name }}" class="form-check-input" id="{{ field.id_for_label }}" {% if field.value %}checked{% endif %}>
                                         <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                                     </div>
-                                {% elif field.field.choices %}
+                                {% elif field.field.choices or field.name == 'owner' %}
                                     <select name="{{ field.name }}" class="form-select {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}">
-                                        {% for value, text in field.field.choices %}
-                                            <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ text }}</option>
-                                        {% endfor %}
+                                        {% if field.field.choices %}
+                                            {% for value, text in field.field.choices %}
+                                                <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ text }}</option>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% for obj in field.field.queryset %}
+                                                <option value="{{ obj.pk }}" {% if field.value == obj.pk|stringformat:"s" %}selected{% endif %}>{{ obj }}</option>
+                                            {% endfor %}
+                                        {% endif %}
                                     </select>
                                 {% else %}
                                     <input type="text" name="{{ field.name }}" class="form-control {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}">

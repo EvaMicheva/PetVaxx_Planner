@@ -90,6 +90,18 @@
   },
   {
     "model": "vaccines.vaccine",
+    "pk": 7,
+    "fields": {
+      "name": "Nobivac FPLV",
+      "category": "core",
+      "description": "FPLV only component for specific boosters.",
+      "applicable_species": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "vaccines.vaccine",
     "pk": 8,
     "fields": {
       "name": "Nobivac FeLV (LeuFel)",

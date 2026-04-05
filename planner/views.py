@@ -13,7 +13,7 @@ from .utils import DoseGenerator
 
 def home(request):
     if request.user.is_authenticated:
-        if request.user.groups.filter(name='Vet Administrators').exists() or request.user.is_superuser:
+        if request.user.is_vet or request.user.groups.filter(name='Vet Administrators').exists() or request.user.is_superuser:
             pets_count = Pet.objects.count()
             plans_count = Plan.objects.count()
         else:
@@ -35,7 +35,7 @@ class PlanListView(LoginRequiredMixin, ListView):
     context_object_name = "plans"
 
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+        if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             qs = super().get_queryset().select_related("pet")
         else:
             qs = super().get_queryset().filter(pet__user=self.request.user).select_related("pet")
@@ -54,7 +54,7 @@ class PlanListView(LoginRequiredMixin, ListView):
         return qs.order_by(*order_map.get(order, ("-created_at",)))
 
     def get_context_data(self, **kwargs):
-        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+        if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             total_count = Plan.objects.count()
         else:
             total_count = Plan.objects.filter(pet__user=self.request.user).count()
@@ -72,7 +72,7 @@ class PlanDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "plan"
 
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+        if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             return super().get_queryset()
         return super().get_queryset().filter(pet__user=self.request.user)
 
@@ -84,7 +84,7 @@ class PlanCreateView(LoginRequiredMixin, CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        if not (self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser):
+        if not (self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser):
             form.fields['pet'].queryset = Pet.objects.filter(user=self.request.user)
         return form
 
@@ -102,13 +102,13 @@ class PlanUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("planner:list")
 
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+        if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             return super().get_queryset()
         return super().get_queryset().filter(pet__user=self.request.user)
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        if not (self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser):
+        if not (self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser):
             form.fields['pet'].queryset = Pet.objects.filter(user=self.request.user)
         return form
 
@@ -122,7 +122,7 @@ class PlanDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("planner:list")
 
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+        if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             return super().get_queryset()
         return super().get_queryset().filter(pet__user=self.request.user)
 
@@ -133,9 +133,7 @@ class PlanDeleteView(LoginRequiredMixin, DeleteView):
 @login_required
 def quick_plan_create(request):
     if request.method == "POST":
-        form = QuickPlanForm(request.POST)
-        if not (request.user.groups.filter(name='Vet Administrators').exists() or request.user.is_superuser):
-            form.fields['pet'].queryset = Pet.objects.filter(user=request.user)
+        form = QuickPlanForm(request.POST, user=request.user)
         
         if form.is_valid():
             cd = form.cleaned_data
@@ -143,8 +141,9 @@ def quick_plan_create(request):
             if cd.get("pet"):
                 pet = cd["pet"]
             else:
+                owner = cd.get("owner") or request.user
                 pet = Pet.objects.create(
-                    user=request.user,
+                    user=owner,
                     name=cd["name"],
                     species=cd["species"],
                     birth_date=cd["birth_date"],
@@ -162,9 +161,7 @@ def quick_plan_create(request):
             messages.success(request, f"Plan generated for {pet.name} with all recommended doses!")
             return redirect(reverse("planner:detail", kwargs={"pk": plan.pk}))
     else:
-        form = QuickPlanForm()
-        if not (request.user.groups.filter(name='Vet Administrators').exists() or request.user.is_superuser):
-            form.fields['pet'].queryset = Pet.objects.filter(user=request.user)
+        form = QuickPlanForm(user=request.user)
 
     return render(request, "planner/quick_plan_form.html", {
         "form": form,

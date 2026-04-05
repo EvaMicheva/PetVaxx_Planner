@@ -50,7 +50,22 @@ class PetForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+
+        if user and (user.is_vet or user.groups.filter(name='Vet Administrators').exists() or user.is_superuser):
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+            self.fields['user'] = forms.ModelChoiceField(
+                queryset=User.objects.all(),
+                required=False,
+                label="Owner",
+                help_text="Select the pet owner (Vets only).",
+                initial=user
+            )
+
+            field_order = ['user', 'name', 'species', 'birth_date', 'lifestyle', 'travels_abroad', 'medical_conditions', 'notes', 'age_in_weeks']
+            self.order_fields(field_order)
 
         birth = None
 

@@ -9,7 +9,7 @@ from .forms import PetForm
 
 @login_required
 def pet_list(request):
-    if request.user.groups.filter(name='Vet Administrators').exists() or request.user.is_superuser:
+    if request.user.is_vet or request.user.groups.filter(name='Vet Administrators').exists() or request.user.is_superuser:
         pets = Pet.objects.all()
     else:
         pets = Pet.objects.filter(user=request.user)
@@ -21,7 +21,7 @@ class PetDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "pet"
 
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+        if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             return super().get_queryset()
         return super().get_queryset().filter(user=self.request.user)
 
@@ -31,8 +31,14 @@ class PetCreateView(LoginRequiredMixin, CreateView):
     template_name = "pets/pet_form.html"
     success_url = reverse_lazy("pets:list")
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        if not form.instance.user:
+            form.instance.user = self.request.user
         messages.success(self.request, f"Pet '{form.instance.name}' added successfully!")
         return super().form_valid(form)
 
@@ -43,9 +49,14 @@ class PetUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("pets:list")
 
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+        if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             return super().get_queryset()
         return super().get_queryset().filter(user=self.request.user)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def form_valid(self, form):
         messages.success(self.request, f"Pet '{form.instance.name}' updated successfully!")
@@ -57,7 +68,7 @@ class PetDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("pets:list")
 
     def get_queryset(self):
-        if self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
+        if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             return super().get_queryset()
         return super().get_queryset().filter(user=self.request.user)
 

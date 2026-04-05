@@ -43,11 +43,17 @@
                                     <input type="date" name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|date:'Y-m-d'|default:field.value|default:'' }}" {% if field.field.disabled %}disabled{% endif %}>
                                 {% elif field.name == "notes" %}
                                     <textarea name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" rows="3" placeholder="Any specific medical history or allergies?" {% if field.field.disabled %}disabled{% endif %}>{{ field.value|default:"" }}</textarea>
-                                {% elif field.field.choices %}
+                                {% elif field.field.choices or field.name == 'user' %}
                                     <select name="{{ field.name }}" class="form-select shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" {% if field.field.disabled %}disabled{% endif %}>
-                                        {% for value, text in field.field.choices %}
-                                            <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ text }}</option>
-                                        {% endfor %}
+                                        {% if field.field.choices %}
+                                            {% for value, text in field.field.choices %}
+                                                <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ text }}</option>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% for obj in field.field.queryset %}
+                                                <option value="{{ obj.pk }}" {% if field.value == obj.pk|stringformat:"s" or field.value == obj.pk %}selected{% endif %}>{{ obj }}</option>
+                                            {% endfor %}
+                                        {% endif %}
                                     </select>
                                 {% else %}
                                     <input type="{{ field.field.widget.input_type|default:'text' }}" name="{{ field.name }}" class="form-control shadow-sm {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}" placeholder="Enter {{ field.label|lower }}" {% if field.field.disabled %}disabled{% endif %}>
