@@ -55,7 +55,11 @@ class PetForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['medical_conditions'].required = False
 
-        if user and (user.is_vet or user.groups.filter(name='Vet Administrators').exists() or user.is_superuser):
+        is_admin = False
+        if user:
+            is_admin = user.is_vet or user.groups.filter(name='Vet Administrators').exists() or user.is_superuser
+
+        if is_admin:
             from django.contrib.auth import get_user_model
             User = get_user_model()
             self.fields['user'] = forms.ModelChoiceField(
@@ -63,11 +67,15 @@ class PetForm(forms.ModelForm):
                 required=False,
                 label="Owner",
                 help_text="Select the pet owner (Vets only).",
-                initial=user
+                initial=self.instance.user if self.instance.pk and self.instance.user else user
             )
 
             field_order = ['user', 'name', 'species', 'birth_date', 'lifestyle', 'travels_abroad', 'medical_conditions', 'notes', 'age_in_weeks']
             self.order_fields(field_order)
+        else:
+            # For non-admin users, remove the user field if it was somehow added or ensure it's not present
+            if 'user' in self.fields:
+                del self.fields['user']
 
         birth = None
 
@@ -79,6 +87,13 @@ class PetForm(forms.ModelForm):
                 0,
                 (timezone.localdate() - birth).days // 7
             )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        user_field = cleaned_data.get('user')
+        if user_field:
+            self.instance.user = user_field
+        return cleaned_data
 
     def clean_birth_date(self):
         birth_date = self.cleaned_data.get("birth_date")
