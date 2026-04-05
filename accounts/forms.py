@@ -53,8 +53,18 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'phone']
+        labels = {
+            'first_name': 'First Name',
+            'last_name': 'Last Name',
+            'phone': 'Phone Number',
+        }
+        help_texts = {
+            'first_name': 'Enter your first name.',
+            'last_name': 'Enter your surname.',
+            'phone': 'Enter a valid contact number (e.g., +123456789).',
+        }
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. John'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. Doe'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. +1 555-0199'}),
         }

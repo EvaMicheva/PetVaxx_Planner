@@ -32,4 +32,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Add bootstrap classes to form inputs
+    document.querySelectorAll('input, select, textarea').forEach(function(el) {
+        if (!el.classList.contains('form-check-input')) {
+            el.classList.add('form-control');
+        }
+    });
+</script>
 {% endblock %}

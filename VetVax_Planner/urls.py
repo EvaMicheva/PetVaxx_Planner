@@ -28,3 +28,4 @@ urlpatterns = [
 
 # Custom error handlers
 handler404 = "VetVax_Planner.views.custom_404"
+handler500 = "VetVax_Planner.views.custom_500"

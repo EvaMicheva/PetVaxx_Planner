@@ -10,7 +10,15 @@
                 <h3 class="card-title text-center mb-4">Login</h3>
                 <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
                     <div class="d-grid gap-2 mt-4">
                         <button type="submit" class="btn btn-primary rounded-pill">Login</button>
                     </div>
@@ -22,4 +30,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Add bootstrap classes to form inputs
+    document.querySelectorAll('input, select, textarea').forEach(function(el) {
+        if (!el.classList.contains('form-check-input')) {
+            el.classList.add('form-control');
+        }
+    });
+</script>
 {% endblock %}
