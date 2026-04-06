@@ -107,14 +107,12 @@ This application was developed by a **Veterinary Technician** as a **mock model*
 
 ## Screenshots
 
-```markdown
 ![Homepage Screenshot](static/images/Homepage.png)
 ![About Us Screenshot](static/images/About-Us.png)
 ![Pet Profile Screenshot](static/images/Manage-Pets.png)
 ![Available Vaccines Screenshot](static/images/Available-Vaccines.png)
 ![Quick Plan Generator Screenshot](static/images/Quick-Plan-Generator.png)
 ![Vaccination Plan Screenshot](static/images/Vaccination-Plans.png)
-```
 
 ## 🚀 Project Highlights
 - **5+ Django Apps:** `accounts`, `pets`, `vaccines`, `planner`, `common`.
