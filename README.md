@@ -105,6 +105,17 @@ This application was developed by a **Veterinary Technician** as a **mock model*
 - `planner/`: Management of vaccination plans and individual doses.
 - `VetVax_Planner/`: Core Django project settings and configuration.
 
+## Screenshots
+
+```markdown
+![Homepage Screenshot](static/images/Homepage.png)
+![About Us Screenshot](static/images/About-Us.png)
+![Pet Profile Screenshot](static/images/Manage-Pets.png)
+![Available Vaccines Screenshot](static/images/Available-Vaccines.png)
+![Quick Plan Generator Screenshot](static/images/Quick-Plan-Generator.png)
+![Vaccination Plan Screenshot](static/images/Vaccination-Plans.png)
+```
+
 ## 🚀 Project Highlights
 - **5+ Django Apps:** `accounts`, `pets`, `vaccines`, `planner`, `common`.
 - **Advanced Permissions:** Distinct roles for "Vet Administrators" (global view/manage) and "Regular Users" (personal data only).
