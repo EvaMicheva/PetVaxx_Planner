@@ -20,6 +20,19 @@ class PetDetailView(LoginRequiredMixin, DetailView):
     template_name = "pets/pet_detail.html"
     context_object_name = "pet"
 
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        import django.shortcuts
+        obj = django.shortcuts.get_object_or_404(Pet, pk=self.kwargs.get(self.pk_url_kwarg, 'pk'))
+
+        if not (self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser):
+            if obj.user != self.request.user:
+                from django.core.exceptions import PermissionDenied
+                raise PermissionDenied
+        return obj
+
     def get_queryset(self):
         if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             return super().get_queryset()
@@ -48,6 +61,19 @@ class PetUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "pets/pet_form.html"
     success_url = reverse_lazy("pets:list")
 
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        
+        import django.shortcuts
+        obj = django.shortcuts.get_object_or_404(Pet, pk=self.kwargs.get(self.pk_url_kwarg, 'pk'))
+
+        if not (self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser):
+            if obj.user != self.request.user:
+                from django.core.exceptions import PermissionDenied
+                raise PermissionDenied
+        return obj
+
     def get_queryset(self):
         if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             return super().get_queryset()
@@ -66,6 +92,19 @@ class PetDeleteView(LoginRequiredMixin, DeleteView):
     model = Pet
     template_name = "pets/pet_confirm_delete.html"
     success_url = reverse_lazy("pets:list")
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        
+        import django.shortcuts
+        obj = django.shortcuts.get_object_or_404(Pet, pk=self.kwargs.get(self.pk_url_kwarg, 'pk'))
+
+        if not (self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser):
+            if obj.user != self.request.user:
+                from django.core.exceptions import PermissionDenied
+                raise PermissionDenied
+        return obj
 
     def get_queryset(self):
         if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:

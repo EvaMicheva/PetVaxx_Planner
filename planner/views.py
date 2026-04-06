@@ -71,6 +71,19 @@ class PlanDetailView(LoginRequiredMixin, DetailView):
     template_name = "planner/plan_detail.html"
     context_object_name = "plan"
 
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        
+        import django.shortcuts
+        obj = django.shortcuts.get_object_or_404(Plan, pk=self.kwargs.get(self.pk_url_kwarg, 'pk'))
+
+        if not (self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser):
+            if obj.pet.user != self.request.user:
+                from django.core.exceptions import PermissionDenied
+                raise PermissionDenied
+        return obj
+
     def get_queryset(self):
         if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             return super().get_queryset()
@@ -101,6 +114,19 @@ class PlanUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "planner/plan_form.html"
     success_url = reverse_lazy("planner:list")
 
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        
+        import django.shortcuts
+        obj = django.shortcuts.get_object_or_404(Plan, pk=self.kwargs.get(self.pk_url_kwarg, 'pk'))
+
+        if not (self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser):
+            if obj.pet.user != self.request.user:
+                from django.core.exceptions import PermissionDenied
+                raise PermissionDenied
+        return obj
+
     def get_queryset(self):
         if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
             return super().get_queryset()
@@ -120,6 +146,19 @@ class PlanDeleteView(LoginRequiredMixin, DeleteView):
     model = Plan
     template_name = "planner/plan_confirm_delete.html"
     success_url = reverse_lazy("planner:list")
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        
+        import django.shortcuts
+        obj = django.shortcuts.get_object_or_404(Plan, pk=self.kwargs.get(self.pk_url_kwarg, 'pk'))
+
+        if not (self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser):
+            if obj.pet.user != self.request.user:
+                from django.core.exceptions import PermissionDenied
+                raise PermissionDenied
+        return obj
 
     def get_queryset(self):
         if self.request.user.is_vet or self.request.user.groups.filter(name='Vet Administrators').exists() or self.request.user.is_superuser:
